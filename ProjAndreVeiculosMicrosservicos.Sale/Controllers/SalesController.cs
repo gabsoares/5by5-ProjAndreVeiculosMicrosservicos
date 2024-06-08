@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using APIAndreVeiculosMicrosservicos.Sale.Data;
+using Models.DTO;
+using Models;
 
 namespace APIAndreVeiculosMicrosservicos.Sale.Controllers
 {
@@ -19,23 +21,44 @@ namespace APIAndreVeiculosMicrosservicos.Sale.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Models.Sale>>> GetSale()
         {
-          if (_context.Sale == null)
-          {
-              return NotFound();
-          }
-            return await _context.Sale.ToListAsync();
+            if (_context.Sale == null)
+            {
+                return NotFound();
+            }
+            return await _context.Sale
+                .Include(s => s.Car)
+                .Include(s => s.Client)
+                .Include(s => s.Client.Adress)
+                .Include(s => s.Employee)
+                .Include(s => s.Employee.Adress)
+                .Include(s => s.Employee.Role)
+                .Include(s => s.Payment)
+                .Include(s => s.Payment.CreditCard)
+                .Include(s => s.Payment.Pix)
+                .Include(s => s.Payment.Ticket)
+                .ToListAsync();
         }
 
         // GET: api/Sales/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Models.Sale>> GetSale(int id)
         {
-          if (_context.Sale == null)
-          {
-              return NotFound();
-          }
-            var sale = await _context.Sale.FindAsync(id);
-
+            if (_context.Sale == null)
+            {
+                return NotFound();
+            }
+            var sale = await _context.Sale
+                .Include(s => s.Car)
+                .Include(s => s.Client)
+                .Include(s => s.Client.Adress)
+                .Include(s => s.Employee)
+                .Include(s => s.Employee.Adress)
+                .Include(s => s.Employee.Role)
+                .Include(s => s.Payment)
+                .Include(s => s.Payment.CreditCard)
+                .Include(s => s.Payment.Pix)
+                .Include(s => s.Payment.Ticket)
+                .FirstOrDefaultAsync(s => s.Id == id);
             if (sale == null)
             {
                 return NotFound();
@@ -76,12 +99,21 @@ namespace APIAndreVeiculosMicrosservicos.Sale.Controllers
 
         // POST: api/Sales
         [HttpPost]
-        public async Task<ActionResult<Models.Sale>> PostSale(Models.Sale sale)
+        public async Task<ActionResult<Models.Sale>> PostSale(SaleDTO saleDTO)
         {
-          if (_context.Sale == null)
-          {
-              return Problem("Entity set 'APIAndreVeiculosMicrosservicosSaleContext.Sale'  is null.");
-          }
+            if (_context.Sale == null)
+            {
+                return Problem("Entity set 'APIAndreVeiculosMicrosservicosSaleContext.Sale'  is null.");
+            }
+            Models.Sale sale = new Models.Sale(saleDTO);
+
+            sale.Car = await _context.Car.FindAsync(saleDTO.CarPlate);
+            sale.Client = await _context.Customer.FindAsync(saleDTO.CustomerCPF);
+            sale.Employee = await _context.Employee.FindAsync(saleDTO.EmployeeCPF);
+            sale.Payment = await _context.Payment.FindAsync(saleDTO.PaymentId);
+            sale.SaleValue = saleDTO.SaleValue;
+            sale.SaleDate = saleDTO.SaleDate;
+
             _context.Sale.Add(sale);
             await _context.SaveChangesAsync();
 

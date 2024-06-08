@@ -15,5 +15,6 @@ namespace _5by5_ProjAndreVeiculosMicrosservicos.Data
         }
 
         public DbSet<Models.Customer> Customer { get; set; } = default!;
+        public DbSet<Models.Adress> Adress { get; set; } = default!;
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using APIAndreVeiculosMicrosservicos.Payment.Data;
 using Models;
+using Models.DTO;
 
 namespace APIAndreVeiculosMicrosservicos.Payment.Controllers
 {
@@ -20,22 +21,26 @@ namespace APIAndreVeiculosMicrosservicos.Payment.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Pix>>> GetPix()
         {
-          if (_context.Pix == null)
-          {
-              return NotFound();
-          }
-            return await _context.Pix.ToListAsync();
+            if (_context.Pix == null)
+            {
+                return NotFound();
+            }
+            return await _context.Pix
+                .Include(p => p.PixType)
+                .ToListAsync();
         }
 
         // GET: api/Pixes/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Pix>> GetPix(int id)
         {
-          if (_context.Pix == null)
-          {
-              return NotFound();
-          }
-            var pix = await _context.Pix.FindAsync(id);
+            if (_context.Pix == null)
+            {
+                return NotFound();
+            }
+            var pix = await _context.Pix
+                .Include(p => p.PixType)
+                .FirstOrDefaultAsync(p => p.Id == id);
 
             if (pix == null)
             {
@@ -77,12 +82,15 @@ namespace APIAndreVeiculosMicrosservicos.Payment.Controllers
 
         // POST: api/Pixes
         [HttpPost]
-        public async Task<ActionResult<Pix>> PostPix(Pix pix)
+        public async Task<ActionResult<Pix>> PostPix(PixDTO pixDTO)
         {
-          if (_context.Pix == null)
-          {
-              return Problem("Entity set 'APIAndreVeiculosMicrosservicosPaymentContext.Pix'  is null.");
-          }
+            if (_context.Pix == null)
+            {
+                return Problem("Entity set 'APIAndreVeiculosMicrosservicosPaymentContext.Pix'  is null.");
+            }
+            Pix pix = new Pix(pixDTO);
+            pix.PixType = await _context.PixType.FindAsync(pixDTO.PixTypeId);
+            pix.PixKey = pixDTO.PixKey;
             _context.Pix.Add(pix);
             await _context.SaveChangesAsync();
 

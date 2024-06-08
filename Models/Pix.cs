@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Models.DTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,19 @@ namespace Models
     {
         public static readonly string INSERT = "INSERT INTO TB_PIX (TYPE_PIX_ID, PIX_KEY) VALUES (@TpPixId, @PixKey) SELECT CAST(SCOPE_IDENTITY() AS INT)";
         public int Id { get; set; }
-        public PixType? PixType { get; set; }
-        public string? PixKey { get; set; }
+        public PixType PixType { get; set; }
+        public string PixKey { get; set; }
+
+        public Pix()
+        {
+            
+        }
+
+        public Pix(PixDTO pixDTO)
+        {
+            PixType pixType = new() { Id = pixDTO.PixTypeId };
+            this.PixType = pixType;
+            this.PixKey = pixDTO.PixKey;
+        }
     }
 }

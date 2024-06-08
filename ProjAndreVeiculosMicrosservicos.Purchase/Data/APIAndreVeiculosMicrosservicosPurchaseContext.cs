@@ -15,5 +15,6 @@ namespace APIAndreVeiculosMicrosservicos.Purchase.Data
         }
 
         public DbSet<Models.Purchase> Purchase { get; set; } = default!;
+        public DbSet<Models.Car> Car { get; set; } = default!;
     }
 }

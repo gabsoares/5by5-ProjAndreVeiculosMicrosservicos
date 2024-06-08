@@ -21,5 +21,7 @@ namespace APIAndreVeiculosMicrosservicos.Payment.Data
         public DbSet<Models.Pix>? Pix { get; set; }
 
         public DbSet<Models.Ticket>? Ticket { get; set; }
+
+        public DbSet<Models.PixType>? PixType { get; set; }
     }
 }

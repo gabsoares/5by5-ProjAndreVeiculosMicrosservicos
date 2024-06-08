@@ -11,21 +11,21 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repositories", "Repositorie
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Services\Services.csproj", "{27710F3B-5CA1-4F13-A89B-27C5CA306A1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APIAndreVeiculosMicrosservicos.Employee", "ProjAndreVeiculosMicrosservicos.Employee\APIAndreVeiculosMicrosservicos.Employee.csproj", "{5271A544-61BA-4FF3-BBBC-72DE73FDD1EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "APIAndreVeiculosMicrosservicos.Employee", "ProjAndreVeiculosMicrosservicos.Employee\APIAndreVeiculosMicrosservicos.Employee.csproj", "{5271A544-61BA-4FF3-BBBC-72DE73FDD1EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APIAndreVeiculosMicrosservicos.Payment", "ProjAndreVeiculosMicrosservicos.Payment\APIAndreVeiculosMicrosservicos.Payment.csproj", "{6EF2577E-C8ED-4845-B73B-4400A01B7859}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "APIAndreVeiculosMicrosservicos.Payment", "ProjAndreVeiculosMicrosservicos.Payment\APIAndreVeiculosMicrosservicos.Payment.csproj", "{6EF2577E-C8ED-4845-B73B-4400A01B7859}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APIAndreVeiculosMicrosservicos.Job", "ProjAndreVeiculosMicrosservicos.Job\APIAndreVeiculosMicrosservicos.Job.csproj", "{8F2D3A14-C76E-4E60-A79B-E31913F49430}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "APIAndreVeiculosMicrosservicos.Job", "ProjAndreVeiculosMicrosservicos.Job\APIAndreVeiculosMicrosservicos.Job.csproj", "{8F2D3A14-C76E-4E60-A79B-E31913F49430}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APIAndreVeiculosMicrosservicos.Car", "ProjAndreVeiculosMicrosservicos.Car\APIAndreVeiculosMicrosservicos.Car.csproj", "{ECDBE71D-0784-4EBD-A293-3D9402FB354F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "APIAndreVeiculosMicrosservicos.Car", "ProjAndreVeiculosMicrosservicos.Car\APIAndreVeiculosMicrosservicos.Car.csproj", "{ECDBE71D-0784-4EBD-A293-3D9402FB354F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APIAndreVeiculosMicrosservicos.CarJob", "ProjAndreVeiculosMicrosservicos.CarJob\APIAndreVeiculosMicrosservicos.CarJob.csproj", "{F9F705D7-BEB7-4C0D-9E7F-C780BF3D1DB0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "APIAndreVeiculosMicrosservicos.CarJob", "ProjAndreVeiculosMicrosservicos.CarJob\APIAndreVeiculosMicrosservicos.CarJob.csproj", "{F9F705D7-BEB7-4C0D-9E7F-C780BF3D1DB0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APIAndreVeiculosMicrosservicos.Sale", "ProjAndreVeiculosMicrosservicos.Sale\APIAndreVeiculosMicrosservicos.Sale.csproj", "{E301A344-27AD-4BB3-96EC-E89780F360AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "APIAndreVeiculosMicrosservicos.Sale", "ProjAndreVeiculosMicrosservicos.Sale\APIAndreVeiculosMicrosservicos.Sale.csproj", "{E301A344-27AD-4BB3-96EC-E89780F360AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APIAndreVeiculosMicrosservicos.Purchase", "ProjAndreVeiculosMicrosservicos.Purchase\APIAndreVeiculosMicrosservicos.Purchase.csproj", "{7AD8D55C-2B24-4650-AF1F-94573C53AF3F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "APIAndreVeiculosMicrosservicos.Purchase", "ProjAndreVeiculosMicrosservicos.Purchase\APIAndreVeiculosMicrosservicos.Purchase.csproj", "{7AD8D55C-2B24-4650-AF1F-94573C53AF3F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APIAndreVeiculosMicrosservicos.Adress", "APIAndreVeiculosMicrosservicos.Adress\APIAndreVeiculosMicrosservicos.Adress.csproj", "{67639F17-C439-4388-81CE-D879F2A8BAAA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "APIAndreVeiculosMicrosservicos.Adress", "APIAndreVeiculosMicrosservicos.Adress\APIAndreVeiculosMicrosservicos.Adress.csproj", "{67639F17-C439-4388-81CE-D879F2A8BAAA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

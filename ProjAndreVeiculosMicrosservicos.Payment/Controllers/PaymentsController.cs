@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using APIAndreVeiculosMicrosservicos.Payment.Data;
+using Models.DTO;
 
 namespace APIAndreVeiculosMicrosservicos.Payment.Controllers
 {
@@ -19,22 +20,32 @@ namespace APIAndreVeiculosMicrosservicos.Payment.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Models.Payment>>> GetPayment()
         {
-          if (_context.Payment == null)
-          {
-              return NotFound();
-          }
-            return await _context.Payment.ToListAsync();
+            if (_context.Payment == null)
+            {
+                return NotFound();
+            }
+            return await _context.Payment
+                .Include(p => p.CreditCard)
+                .Include(p => p.Ticket)
+                .Include(p => p.Pix)
+                .Include(p => p.Pix.PixType)
+                .ToListAsync();
         }
 
         // GET: api/Payments/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Models.Payment>> GetPayment(int id)
         {
-          if (_context.Payment == null)
-          {
-              return NotFound();
-          }
-            var payment = await _context.Payment.FindAsync(id);
+            if (_context.Payment == null)
+            {
+                return NotFound();
+            }
+            var payment = await _context.Payment
+                .Include(p => p.CreditCard)
+                .Include(p => p.Ticket)
+                .Include(p => p.Pix)
+                .Include(p => p.Pix.PixType)
+                .FirstOrDefaultAsync(p => p.Id == id);
 
             if (payment == null)
             {
@@ -76,12 +87,16 @@ namespace APIAndreVeiculosMicrosservicos.Payment.Controllers
 
         // POST: api/Payments
         [HttpPost]
-        public async Task<ActionResult<Models.Payment>> PostPayment(Models.Payment payment)
+        public async Task<ActionResult<Models.Payment>> PostPayment(PaymentDTO paymentDTO)
         {
-          if (_context.Payment == null)
-          {
-              return Problem("Entity set 'APIAndreVeiculosMicrosservicosPaymentContext.Payment'  is null.");
-          }
+            if (_context.Payment == null)
+            {
+                return Problem("Entity set 'APIAndreVeiculosMicrosservicosPaymentContext.Payment'  is null.");
+            }
+            Models.Payment payment = new(paymentDTO);
+            payment.CreditCard = await _context.CreditCard.FindAsync(paymentDTO.CreditCardId);
+            payment.Ticket = await _context.Ticket.FindAsync(paymentDTO.TicketId);
+            payment.Pix = await _context.Pix.FindAsync(paymentDTO.PixId);
             _context.Payment.Add(payment);
             await _context.SaveChangesAsync();
 

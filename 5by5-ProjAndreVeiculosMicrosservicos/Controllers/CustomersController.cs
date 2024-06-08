@@ -24,7 +24,7 @@ namespace _5by5_ProjAndreVeiculosMicrosservicos.Controllers
             {
                 return NotFound();
             }
-            return await _context.Customer.ToListAsync();
+            return await _context.Customer.Include(c => c.Adress).ToListAsync();
         }
 
         // GET: api/Customers/5
@@ -35,7 +35,7 @@ namespace _5by5_ProjAndreVeiculosMicrosservicos.Controllers
             {
                 return NotFound();
             }
-            var customer = await _context.Customer.FindAsync(id);
+            var customer = await _context.Customer.Include(c => c.Adress).Where(c => c.CPF == id).FirstOrDefaultAsync(c => c.CPF == id);
 
             if (customer == null)
             {
@@ -83,6 +83,7 @@ namespace _5by5_ProjAndreVeiculosMicrosservicos.Controllers
             {
                 return Problem("Entity set '_5by5_ProjAndreVeiculosMicrosservicosContext.Customer'  is null.");
             }
+            customer.Adress = await _context.Adress.FindAsync(customer.Adress.Id);
             _context.Customer.Add(customer);
             try
             {

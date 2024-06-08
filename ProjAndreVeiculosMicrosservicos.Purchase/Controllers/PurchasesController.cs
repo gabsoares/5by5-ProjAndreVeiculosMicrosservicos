@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using APIAndreVeiculosMicrosservicos.Purchase.Data;
+using Models.DTO;
 
 namespace APIAndreVeiculosMicrosservicos.Purchase.Controllers
 {
@@ -19,10 +20,10 @@ namespace APIAndreVeiculosMicrosservicos.Purchase.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Models.Purchase>>> GetPurchase()
         {
-          if (_context.Purchase == null)
-          {
-              return NotFound();
-          }
+            if (_context.Purchase == null)
+            {
+                return NotFound();
+            }
             return await _context.Purchase.ToListAsync();
         }
 
@@ -30,10 +31,10 @@ namespace APIAndreVeiculosMicrosservicos.Purchase.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Models.Purchase>> GetPurchase(int id)
         {
-          if (_context.Purchase == null)
-          {
-              return NotFound();
-          }
+            if (_context.Purchase == null)
+            {
+                return NotFound();
+            }
             var purchase = await _context.Purchase.FindAsync(id);
 
             if (purchase == null)
@@ -76,12 +77,18 @@ namespace APIAndreVeiculosMicrosservicos.Purchase.Controllers
 
         // POST: api/Purchases
         [HttpPost]
-        public async Task<ActionResult<Models.Purchase>> PostPurchase(Models.Purchase purchase)
+        public async Task<ActionResult<Models.Purchase>> PostPurchase(PurchaseDTO purchaseDTO)
         {
-          if (_context.Purchase == null)
-          {
-              return Problem("Entity set 'APIAndreVeiculosMicrosservicosPurchaseContext.Purchase'  is null.");
-          }
+            if (_context.Purchase == null)
+            {
+                return Problem("Entity set 'APIAndreVeiculosMicrosservicosPurchaseContext.Purchase'  is null.");
+            }
+            Models.Purchase purchase = new Models.Purchase(purchaseDTO);
+
+            purchase.Car = await _context.Car.FindAsync(purchaseDTO.CarPlate);
+            purchase.Price = purchaseDTO.Price;
+            purchase.PurchaseDate = purchaseDTO.PurchaseDate;
+
             _context.Purchase.Add(purchase);
             await _context.SaveChangesAsync();
 

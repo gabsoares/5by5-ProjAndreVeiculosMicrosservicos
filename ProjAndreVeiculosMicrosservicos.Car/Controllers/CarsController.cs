@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using APIAndreVeiculosMicrosservicos.Car.Data;
+using APIAndreVeiculosMicrosservicos.Car.CarService;
+using Models.DTO;
 
 namespace APIAndreVeiculosMicrosservicos.Car.Controllers
 {
@@ -76,12 +78,17 @@ namespace APIAndreVeiculosMicrosservicos.Car.Controllers
 
         // POST: api/Cars
         [HttpPost]
-        public async Task<ActionResult<Models.Car>> PostCar(Models.Car car)
+        public async Task<ActionResult<Models.Car>> PostCar(CarDTO carDTO)
         {
             if (_context.Car == null)
             {
                 return Problem("Entity set 'APIAndreVeiculosMicrosservicosCarContext.Car'  is null.");
             }
+            Models.Car car = new Models.Car(carDTO);
+
+            car.CarPlate = new CarService.CarService().GenerateCarPlate();
+            car.IsSold = false;
+
             _context.Car.Add(car);
             try
             {
@@ -98,7 +105,6 @@ namespace APIAndreVeiculosMicrosservicos.Car.Controllers
                     throw;
                 }
             }
-
             return CreatedAtAction("GetCar", new { id = car.CarPlate }, car);
         }
 

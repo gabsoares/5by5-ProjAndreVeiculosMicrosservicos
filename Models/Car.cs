@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Models.DTO;
+using System.ComponentModel.DataAnnotations;
 
 namespace Models
 {
@@ -14,5 +15,18 @@ namespace Models
         public int FabricationYear { get; set; }
         public string? CarColor { get; set; }
         public bool IsSold { get; set; }
+
+        public Car()
+        {
+            
+        }
+
+        public Car(CarDTO carDTO)
+        {
+            this.CarName = carDTO.CarName;
+            this.ModelYear = carDTO.ModelYear;
+            this.FabricationYear = carDTO.FabricationYear;
+            this.CarColor = carDTO.CarColor;
+        }
     }
 }

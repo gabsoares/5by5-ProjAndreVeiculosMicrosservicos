@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Models.DTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,5 +12,15 @@ namespace Models
         public static readonly string INSERT = "INSERT INTO TB_ROLE (DESCRIPTION_ROLE) VALUES (@Desc)";
         public int Id { get; set; }
         public string? Description { get; set; }
+
+        public Role()
+        {
+            
+        }
+
+        public Role(RoleDTO roleDTO)
+        {
+            this.Description = roleDTO.RoleDescription;
+        }
     }
 }

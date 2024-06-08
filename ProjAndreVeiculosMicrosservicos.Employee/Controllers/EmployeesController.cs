@@ -25,22 +25,22 @@ namespace APIAndreVeiculosMicrosservicos.Employee.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Models.Employee>>> GetEmployee()
         {
-          if (_context.Employee == null)
-          {
-              return NotFound();
-          }
-            return await _context.Employee.ToListAsync();
+            if (_context.Employee == null)
+            {
+                return NotFound();
+            }
+            return await _context.Employee.Include(r => r.Role).Include(a => a.Adress).ToListAsync();
         }
 
         // GET: api/Employees/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Models.Employee>> GetEmployee(string id)
         {
-          if (_context.Employee == null)
-          {
-              return NotFound();
-          }
-            var employee = await _context.Employee.FindAsync(id);
+            if (_context.Employee == null)
+            {
+                return NotFound();
+            }
+            var employee = await _context.Employee.Include(e => e.Adress).Include(e => e.Role).FirstOrDefaultAsync(c => c.CPF == id);
 
             if (employee == null)
             {
@@ -84,10 +84,12 @@ namespace APIAndreVeiculosMicrosservicos.Employee.Controllers
         [HttpPost]
         public async Task<ActionResult<Models.Employee>> PostEmployee(Models.Employee employee)
         {
-          if (_context.Employee == null)
-          {
-              return Problem("Entity set 'APIAndreVeiculosMicrosservicosEmployeeContext.Employee'  is null.");
-          }
+            if (_context.Employee == null)
+            {
+                return Problem("Entity set 'APIAndreVeiculosMicrosservicosEmployeeContext.Employee'  is null.");
+            }
+            employee.Adress = await _context.Adress.FindAsync(employee.Adress.Id);
+            employee.Role = await _context.Role.FindAsync(employee.Role.Id);
             _context.Employee.Add(employee);
             try
             {

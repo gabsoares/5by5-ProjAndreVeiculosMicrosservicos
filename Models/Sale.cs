@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Models.DTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,5 +17,24 @@ namespace Models
         public Customer? Client { get; set; }
         public Employee? Employee { get; set; }
         public Payment? Payment { get; set; }
+
+        public Sale()
+        {
+            
+        }
+
+        public Sale(SaleDTO saleDTO)
+        {
+            Car car = new Car { CarPlate = saleDTO.CarPlate };
+            Customer customer = new Customer { CPF = saleDTO.CustomerCPF };
+            Employee employee = new Employee { CPF = saleDTO.EmployeeCPF };
+            Payment payment = new Payment { Id = saleDTO.PaymentId };
+            this.Car = car;
+            this.Client = customer;
+            this.Employee = employee;
+            this.Payment = payment;
+            this.SaleValue = saleDTO.SaleValue;
+            this.SaleDate = saleDTO.SaleDate;
+        }
     }
 }

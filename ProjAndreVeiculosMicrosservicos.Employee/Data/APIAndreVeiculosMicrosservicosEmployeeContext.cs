@@ -15,5 +15,7 @@ namespace APIAndreVeiculosMicrosservicos.Employee.Data
         }
 
         public DbSet<Models.Employee> Employee { get; set; } = default!;
+        public DbSet<Models.Role> Role { get; set; } = default!;
+        public DbSet<Models.Adress> Adress { get; set; } = default!;
     }
 }
