@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace APIAndreVeiculosMicrosservicos.Job.Migrations
 {
     [DbContext(typeof(APIAndreVeiculosMicrosservicosJobContext))]
-    [Migration("20240608000311_InitialCreated")]
-    partial class InitialCreated
+    [Migration("20240608135331_v1")]
+    partial class v1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

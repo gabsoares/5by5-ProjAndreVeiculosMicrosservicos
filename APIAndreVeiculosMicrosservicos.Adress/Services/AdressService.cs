@@ -39,16 +39,14 @@ namespace APIAndreVeiculosMicrosservicos.Adress.Services
 
         public async void RetrieveAdressData(AdressDTO adressDTO, string cep, Models.Adress adress)
         {
-            AdressService adressService = new();
-
-            Models.Adress adressFilledWithCorreiosAPI = await adressService.GetAdressData(cep);
+            Models.Adress adressFilledWithCorreiosAPI = await GetAdressData(cep);
 
             if (adressFilledWithCorreiosAPI != null)
             {
                 adress.PublicPlace = adressFilledWithCorreiosAPI.PublicPlace;
                 adress.UF = adressFilledWithCorreiosAPI.UF;
                 adress.City = adressFilledWithCorreiosAPI.City;
-                adress.District = adressFilledWithCorreiosAPI?.District;
+                adress.District = adressFilledWithCorreiosAPI.District;
             }
         }
     }

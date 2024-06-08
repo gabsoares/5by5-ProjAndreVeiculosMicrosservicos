@@ -4,7 +4,7 @@
 
 namespace APIAndreVeiculosMicrosservicos.Adress.Migrations
 {
-    public partial class InitialCreated : Migration
+    public partial class v1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,10 +14,9 @@ namespace APIAndreVeiculosMicrosservicos.Adress.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    PublicPlace = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ZipCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    District = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PublicPlateType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PublicPlace = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ZipCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    District = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Complement = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Number = table.Column<int>(type: "int", nullable: false),
                     UF = table.Column<string>(type: "nvarchar(max)", nullable: true),

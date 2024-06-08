@@ -8,7 +8,7 @@ namespace Models
 {
     public class Job
     {
-        public readonly static string INSERT = "INSERT INTO TB_JOB (DESCRIPTION_JOB) VALUES (@Desc)";
+        public readonly static string GETALL = "SELECT Id, Description FROM dbo.Job";
         public int Id { get; set; }
         public string? Description { get; set; }
     }

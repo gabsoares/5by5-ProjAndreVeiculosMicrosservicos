@@ -4,7 +4,7 @@
 
 namespace APIAndreVeiculosMicrosservicos.CarJob.Migrations
 {
-    public partial class InitialCreated : Migration
+    public partial class v1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -49,6 +49,12 @@ namespace APIAndreVeiculosMicrosservicos.CarJob.Migrations
         {
             migrationBuilder.DropTable(
                 name: "CarJob");
+
+            migrationBuilder.DropTable(
+                name: "Car");
+
+            migrationBuilder.DropTable(
+                name: "Job");
         }
     }
 }

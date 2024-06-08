@@ -87,9 +87,10 @@ namespace APIAndreVeiculosMicrosservicos.Payment.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("PixKey")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PixTypeId")
+                    b.Property<int>("PixTypeId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -159,7 +160,9 @@ namespace APIAndreVeiculosMicrosservicos.Payment.Migrations
                 {
                     b.HasOne("Models.PixType", "PixType")
                         .WithMany()
-                        .HasForeignKey("PixTypeId");
+                        .HasForeignKey("PixTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("PixType");
                 });

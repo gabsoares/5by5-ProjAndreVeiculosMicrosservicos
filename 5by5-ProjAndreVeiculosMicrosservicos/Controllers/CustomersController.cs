@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Models;
 using _5by5_ProjAndreVeiculosMicrosservicos.Data;
+using Models.DTO;
+using Services.Services_DAPPER;
 
 namespace _5by5_ProjAndreVeiculosMicrosservicos.Controllers
 {
@@ -18,13 +20,27 @@ namespace _5by5_ProjAndreVeiculosMicrosservicos.Controllers
 
         // GET: api/Customers
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Customer>>> GetCustomer()
+        public async Task<ActionResult<IEnumerable<Customer>>> GetCustomer(int techType)
         {
             if (_context.Customer == null)
             {
                 return NotFound();
             }
-            return await _context.Customer.Include(c => c.Adress).ToListAsync();
+            if (techType == 0)
+            {
+                return await _context.Customer
+                    .Include(c => c.Adress)
+                    .ToListAsync();
+            }
+            else if (techType == 1)
+            {
+                return new CustomerService().GetAllCustomers(1);
+            }
+            else if (techType == 2)
+            {
+                return new CustomerService().GetAllCustomers(2);
+            }
+            return null;
         }
 
         // GET: api/Customers/5
@@ -35,7 +51,9 @@ namespace _5by5_ProjAndreVeiculosMicrosservicos.Controllers
             {
                 return NotFound();
             }
-            var customer = await _context.Customer.Include(c => c.Adress).Where(c => c.CPF == id).FirstOrDefaultAsync(c => c.CPF == id);
+            var customer = await _context.Customer
+                .Include(c => c.Adress)
+                .FirstOrDefaultAsync(c => c.CPF == id);
 
             if (customer == null)
             {
@@ -47,8 +65,16 @@ namespace _5by5_ProjAndreVeiculosMicrosservicos.Controllers
 
         // PUT: api/Customers/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCustomer(string id, Customer customer)
+        public async Task<IActionResult> PutCustomer(string id, CustomerDTO customerDTO)
         {
+            Customer customer = new(customerDTO);
+            customer.Adress = await _context.Adress.FindAsync(customerDTO.AdressId);
+            customer.Name = customerDTO.CustomerName;
+            customer.DateOfBirth = customerDTO.CustomerDateOfBirth;
+            customer.Phone = customerDTO.CustomerPhone;
+            customer.Email = customerDTO.CustomerEmail;
+            customer.Income = customerDTO.CustomerIncome;
+            customer.PDFDocument = customerDTO.CustomerPDFDoc;
             if (id != customer.CPF)
             {
                 return BadRequest();
@@ -77,13 +103,20 @@ namespace _5by5_ProjAndreVeiculosMicrosservicos.Controllers
 
         // POST: api/Customers
         [HttpPost]
-        public async Task<ActionResult<Customer>> PostCustomer(Customer customer)
+        public async Task<ActionResult<Customer>> PostCustomer(CustomerDTO customerDTO)
         {
             if (_context.Customer == null)
             {
                 return Problem("Entity set '_5by5_ProjAndreVeiculosMicrosservicosContext.Customer'  is null.");
             }
-            customer.Adress = await _context.Adress.FindAsync(customer.Adress.Id);
+            Customer customer = new(customerDTO);
+            customer.Adress = await _context.Adress.FindAsync(customerDTO.AdressId);
+            customer.Name = customerDTO.CustomerName;
+            customer.DateOfBirth = customerDTO.CustomerDateOfBirth;
+            customer.Phone = customerDTO.CustomerPhone;
+            customer.Email = customerDTO.CustomerEmail;
+            customer.Income = customerDTO.CustomerIncome;
+            customer.PDFDocument = customerDTO.CustomerPDFDoc;
             _context.Customer.Add(customer);
             try
             {

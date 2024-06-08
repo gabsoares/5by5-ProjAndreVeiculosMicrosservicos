@@ -4,7 +4,7 @@
 
 namespace APIAndreVeiculosMicrosservicos.Job.Migrations
 {
-    public partial class InitialCreated : Migration
+    public partial class v1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -37,21 +37,21 @@ namespace APIAndreVeiculosMicrosservicos.Employee.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("District")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Number")
                         .HasColumnType("int");
 
                     b.Property<string>("PublicPlace")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PublicPlateType")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UF")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ZipCode")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

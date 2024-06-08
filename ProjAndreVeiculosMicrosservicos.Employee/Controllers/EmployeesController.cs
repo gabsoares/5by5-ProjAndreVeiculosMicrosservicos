@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using APIAndreVeiculosMicrosservicos.Employee.Data;
 using Models;
+using Services.Services_DAPPER;
 
 namespace APIAndreVeiculosMicrosservicos.Employee.Controllers
 {
@@ -23,13 +24,28 @@ namespace APIAndreVeiculosMicrosservicos.Employee.Controllers
 
         // GET: api/Employees
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Models.Employee>>> GetEmployee()
+        public async Task<ActionResult<IEnumerable<Models.Employee>>> GetEmployee(int techType)
         {
             if (_context.Employee == null)
             {
                 return NotFound();
             }
-            return await _context.Employee.Include(r => r.Role).Include(a => a.Adress).ToListAsync();
+            if (techType == 0)
+            {
+                return await _context.Employee
+                    .Include(r => r.Role)
+                    .Include(a => a.Adress)
+                    .ToListAsync();
+            }
+            else if (techType == 1)
+            {
+                return new EmployeeService().GetAllEmployees(1);
+            }
+            else if (techType == 2)
+            {
+                return new EmployeeService().GetAllEmployees(2);
+            }
+            return null;
         }
 
         // GET: api/Employees/5
@@ -40,7 +56,10 @@ namespace APIAndreVeiculosMicrosservicos.Employee.Controllers
             {
                 return NotFound();
             }
-            var employee = await _context.Employee.Include(e => e.Adress).Include(e => e.Role).FirstOrDefaultAsync(c => c.CPF == id);
+            var employee = await _context.Employee
+                .Include(e => e.Adress)
+                .Include(e => e.Role)
+                .FirstOrDefaultAsync(c => c.CPF == id);
 
             if (employee == null)
             {

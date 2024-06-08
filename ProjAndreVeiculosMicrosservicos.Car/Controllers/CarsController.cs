@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using APIAndreVeiculosMicrosservicos.Car.Data;
 using APIAndreVeiculosMicrosservicos.Car.CarService;
 using Models.DTO;
+using Services.Services_DAPPER;
 
 namespace APIAndreVeiculosMicrosservicos.Car.Controllers
 {
@@ -19,13 +20,25 @@ namespace APIAndreVeiculosMicrosservicos.Car.Controllers
 
         // GET: api/Cars
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Models.Car>>> GetCar()
+        public async Task<ActionResult<IEnumerable<Models.Car>>> GetCar(byte techType)
         {
             if (_context.Car == null)
             {
                 return NotFound();
             }
-            return await _context.Car.ToListAsync();
+            if(techType == 0)
+            {
+                return await _context.Car.ToListAsync();
+            }
+            else if(techType == 1)
+            {
+                return new Services.Services_DAPPER.CarService().GetAllCars(1);
+            }
+            else if(techType == 2)
+            {
+                return new Services.Services_DAPPER.CarService().GetAllCars(2);
+            }
+            return null;
         }
 
         // GET: api/Cars/id
@@ -89,6 +102,7 @@ namespace APIAndreVeiculosMicrosservicos.Car.Controllers
             car.CarPlate = new CarService.CarService().GenerateCarPlate();
             car.IsSold = false;
 
+
             _context.Car.Add(car);
             try
             {
@@ -105,6 +119,7 @@ namespace APIAndreVeiculosMicrosservicos.Car.Controllers
                     throw;
                 }
             }
+
             return CreatedAtAction("GetCar", new { id = car.CarPlate }, car);
         }
 

@@ -9,7 +9,7 @@ namespace Models
 {
     public class Role
     {
-        public static readonly string INSERT = "INSERT INTO TB_ROLE (DESCRIPTION_ROLE) VALUES (@Desc)";
+        public static readonly string GETALL = "SELECT Id, Description FROM dbo.Role";
         public int Id { get; set; }
         public string? Description { get; set; }
 

@@ -9,7 +9,7 @@ namespace Models
 {
     public class CarJob
     {
-        public readonly static string INSERT = "INSERT INTO TB_CAR_JOB (CAR_ID, JOB_ID, STATUS_SERVICE) VALUES (@CarId, @ServiceId, @StatusService)";
+        public readonly static string GETALL = "SELECT [c].[Id], [c].[CarPlate], [c].[JobId], [c].[Status], [c0].[CarPlate] AS CarPlate, [c0].[CarColor], [c0].[CarName], [c0].[FabricationYear], [c0].[IsSold], [c0].[ModelYear], [j].[Id] AS Id, [j].[Description] FROM [CarJob] AS [c] LEFT JOIN [Car] AS [c0] ON [c].[CarPlate] = [c0].[CarPlate] INNER JOIN [Job] AS [j] ON [c].[JobId] = [j].[Id]";
 
         public int Id { get; set; }
         public Car Car { get; set; }

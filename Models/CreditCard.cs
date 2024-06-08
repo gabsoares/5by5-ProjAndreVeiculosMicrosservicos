@@ -13,7 +13,7 @@ namespace Models
         public int Id { get; set; }
         public string? CardNumber { get; set; }
         public string? SecurityCode { get; set; }
-        public string? ExpirationDate { get; set; }
+        public DateTime? ExpirationDate { get; set; }
         public string? CardHolderName { get; set; }
     }
 }

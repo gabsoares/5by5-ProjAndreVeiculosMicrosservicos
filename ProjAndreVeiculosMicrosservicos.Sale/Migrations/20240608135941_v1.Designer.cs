@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace APIAndreVeiculosMicrosservicos.Sale.Migrations
 {
     [DbContext(typeof(APIAndreVeiculosMicrosservicosSaleContext))]
-    [Migration("20240608000548_InitialCreated")]
-    partial class InitialCreated
+    [Migration("20240608135941_v1")]
+    partial class v1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -39,21 +39,21 @@ namespace APIAndreVeiculosMicrosservicos.Sale.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("District")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Number")
                         .HasColumnType("int");
 
                     b.Property<string>("PublicPlace")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PublicPlateType")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UF")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ZipCode")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -222,9 +222,10 @@ namespace APIAndreVeiculosMicrosservicos.Sale.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("PixKey")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PixTypeId")
+                    b.Property<int>("PixTypeId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -373,7 +374,9 @@ namespace APIAndreVeiculosMicrosservicos.Sale.Migrations
                 {
                     b.HasOne("Models.PixType", "PixType")
                         .WithMany()
-                        .HasForeignKey("PixTypeId");
+                        .HasForeignKey("PixTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("PixType");
                 });

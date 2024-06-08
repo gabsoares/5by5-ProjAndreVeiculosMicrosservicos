@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace APIAndreVeiculosMicrosservicos.Payment.Migrations
 {
     [DbContext(typeof(APIAndreVeiculosMicrosservicosPaymentContext))]
-    [Migration("20240608000434_InitialCreated")]
-    partial class InitialCreated
+    [Migration("20240608135751_v1")]
+    partial class v1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -89,9 +89,10 @@ namespace APIAndreVeiculosMicrosservicos.Payment.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("PixKey")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PixTypeId")
+                    b.Property<int>("PixTypeId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -161,7 +162,9 @@ namespace APIAndreVeiculosMicrosservicos.Payment.Migrations
                 {
                     b.HasOne("Models.PixType", "PixType")
                         .WithMany()
-                        .HasForeignKey("PixTypeId");
+                        .HasForeignKey("PixTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("PixType");
                 });

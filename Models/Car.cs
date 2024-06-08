@@ -5,7 +5,7 @@ namespace Models
 {
     public class Car
     {
-        public readonly static string INSERT = "INSERT INTO TB_CAR (CAR_PLATE, CAR_NAME, CAR_COLOR, MODEL_YEAR, FABRICATION_YEAR, IS_SOLD) VALUES (@Plate, @Name, @Color, @ModelYear, @FabricationYear, @IsSold)";
+        public readonly static string GETALL = "SELECT CarPlate, CarName, CarColor, ModelYear, FabricationYear, IsSold FROM dbo.Car";
 
         [Key]
         public string CarPlate { get; set; }

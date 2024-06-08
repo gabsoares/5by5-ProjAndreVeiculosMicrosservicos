@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using APIAndreVeiculosMicrosservicos.CarJob.Data;
 using Models;
 using Models.DTO;
+using Services.Services_DAPPER;
 
 namespace APIAndreVeiculosMicrosservicos.CarJob.Controllers
 {
@@ -19,13 +20,28 @@ namespace APIAndreVeiculosMicrosservicos.CarJob.Controllers
 
         // GET: api/CarJobs
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Models.CarJob>>> GetCarJob()
+        public async Task<ActionResult<IEnumerable<Models.CarJob>>> GetCarJob(byte techType)
         {
             if (_context.CarJob == null)
             {
                 return NotFound();
             }
-            return await _context.CarJob.ToListAsync();
+            if (techType == 0)
+            {
+                return await _context.CarJob
+                    .Include(c => c.Car)
+                    .Include(c => c.Job)
+                    .ToListAsync();
+            }
+            else if (techType == 1)
+            {
+                return new CarJobService().GetAllCarJobs(1);
+            }
+            else if (techType == 2)
+            {
+                return new CarJobService().GetAllCarJobs(2);
+            }
+            return null;
         }
 
         // GET: api/CarJobs/5

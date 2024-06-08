@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace APIAndreVeiculosMicrosservicos.Payment.Migrations
 {
-    public partial class InitialCreated : Migration
+    public partial class v1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -58,8 +58,8 @@ namespace APIAndreVeiculosMicrosservicos.Payment.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    PixTypeId = table.Column<int>(type: "int", nullable: true),
-                    PixKey = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    PixTypeId = table.Column<int>(type: "int", nullable: false),
+                    PixKey = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -68,7 +68,8 @@ namespace APIAndreVeiculosMicrosservicos.Payment.Migrations
                         name: "FK_Pix_PixType_PixTypeId",
                         column: x => x.PixTypeId,
                         principalTable: "PixType",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(

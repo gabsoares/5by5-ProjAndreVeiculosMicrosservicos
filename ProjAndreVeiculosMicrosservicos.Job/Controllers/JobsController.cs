@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using APIAndreVeiculosMicrosservicos.Job.Data;
+using Services.Services_DAPPER;
 
 namespace APIAndreVeiculosMicrosservicos.Job.Controllers
 {
@@ -17,23 +18,35 @@ namespace APIAndreVeiculosMicrosservicos.Job.Controllers
 
         // GET: api/Jobs
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Models.Job>>> GetJob()
+        public async Task<ActionResult<IEnumerable<Models.Job>>> GetJob(byte techType)
         {
-          if (_context.Job == null)
-          {
-              return NotFound();
-          }
-            return await _context.Job.ToListAsync();
+            if (_context.Job == null)
+            {
+                return NotFound();
+            }
+            if (techType == 0)
+            {
+                return await _context.Job.ToListAsync();
+            }
+            else if (techType == 1)
+            {
+                return new JobService().GetAllJobs(1);
+            }
+            else if (techType == 2)
+            {
+                return new JobService().GetAllJobs(2);
+            }
+            return null;
         }
 
         // GET: api/Jobs/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Models.Job>> GetJob(int id)
         {
-          if (_context.Job == null)
-          {
-              return NotFound();
-          }
+            if (_context.Job == null)
+            {
+                return NotFound();
+            }
             var job = await _context.Job.FindAsync(id);
 
             if (job == null)
@@ -78,10 +91,10 @@ namespace APIAndreVeiculosMicrosservicos.Job.Controllers
         [HttpPost]
         public async Task<ActionResult<Models.Job>> PostJob(Models.Job job)
         {
-          if (_context.Job == null)
-          {
-              return Problem("Entity set 'APIAndreVeiculosMicrosservicosJobContext.Job'  is null.");
-          }
+            if (_context.Job == null)
+            {
+                return Problem("Entity set 'APIAndreVeiculosMicrosservicosJobContext.Job'  is null.");
+            }
             _context.Job.Add(job);
             await _context.SaveChangesAsync();
 

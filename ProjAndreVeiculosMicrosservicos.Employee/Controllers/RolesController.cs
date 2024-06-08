@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using APIAndreVeiculosMicrosservicos.Employee.Data;
 using Models;
 using Models.DTO;
+using Services.Services_DAPPER;
 
 namespace APIAndreVeiculosMicrosservicos.Employee.Controllers
 {
@@ -24,13 +25,25 @@ namespace APIAndreVeiculosMicrosservicos.Employee.Controllers
 
         // GET: api/Roles
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Role>>> GetRole()
+        public async Task<ActionResult<IEnumerable<Role>>> GetRole(byte techType)
         {
             if (_context.Role == null)
             {
                 return NotFound();
             }
-            return await _context.Role.ToListAsync();
+            if (techType == 0)
+            {
+                return await _context.Role.ToListAsync();
+            }
+            else if (techType == 1)
+            {
+                return new RoleService().GetAllRoles(1);
+            }
+            else if (techType == 2)
+            {
+                return new RoleService().GetAllRoles(2);
+            }
+            return null;
         }
 
         // GET: api/Roles/5

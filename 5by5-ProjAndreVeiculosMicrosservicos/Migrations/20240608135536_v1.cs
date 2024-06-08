@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace _5by5_ProjAndreVeiculosMicrosservicos.Migrations
 {
-    public partial class InitialCreated : Migration
+    public partial class v1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -42,6 +42,9 @@ namespace _5by5_ProjAndreVeiculosMicrosservicos.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Customer");
+
+            migrationBuilder.DropTable(
+                name: "Adress");
         }
     }
 }

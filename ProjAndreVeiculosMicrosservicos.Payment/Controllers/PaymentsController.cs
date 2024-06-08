@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using APIAndreVeiculosMicrosservicos.Payment.Data;
 using Models.DTO;
+using Services.Services;
 
 namespace APIAndreVeiculosMicrosservicos.Payment.Controllers
 {
@@ -18,18 +19,31 @@ namespace APIAndreVeiculosMicrosservicos.Payment.Controllers
 
         // GET: api/Payments
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Models.Payment>>> GetPayment()
+        public async Task<ActionResult<IEnumerable<Models.Payment>>> GetPayment(byte techType)
         {
             if (_context.Payment == null)
             {
                 return NotFound();
             }
-            return await _context.Payment
-                .Include(p => p.CreditCard)
-                .Include(p => p.Ticket)
-                .Include(p => p.Pix)
-                .Include(p => p.Pix.PixType)
-                .ToListAsync();
+            if (techType == 0)
+            {
+                return await _context.Payment
+                    .Include(p => p.CreditCard)
+                    .Include(p => p.Ticket)
+                    .Include(p => p.Pix)
+                    .Include(p => p.Pix.PixType)
+                    .ToListAsync();
+            }
+            else if (techType == 1)
+            {
+                return new PaymentService().GetAllPayments(1);
+            }
+            else if (techType == 2)
+            {
+                return new PaymentService().GetAllPayments(2);
+            }
+            return null;
+
         }
 
         // GET: api/Payments/5
