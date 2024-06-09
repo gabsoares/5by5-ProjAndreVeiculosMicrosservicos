@@ -9,7 +9,9 @@ namespace Models
 {
     public class Purchase
     {
-        public static readonly string INSERT = "INSERT INTO TB_PURCHASE (CAR_ID, PURCHASE_VALUE, PURCHASE_DATE) VALUES (@CarId, @PurcValue, @PurcDate)";
+        public static readonly string GETALL = "SELECT [p].[Id], [p].[CarPlate], [p].[Price], [p].[PurchaseDate], [c].[CarPlate], [c].[CarColor], [c].[CarName], [c].[FabricationYear], [c].[IsSold], [c].[ModelYear] FROM [Purchase] AS [p] LEFT JOIN [Car] AS [c] ON [p].[CarPlate] = [c].[CarPlate]";
+
+        public static readonly string GETALLDapper = "SELECT [p].[Id], [p].[CarPlate], [p].[Price], [p].[PurchaseDate], [c].[CarPlate] AS CarPlate, [c].[CarColor], [c].[CarName], [c].[FabricationYear], [c].[IsSold], [c].[ModelYear] FROM [Purchase] AS [p] LEFT JOIN [Car] AS [c] ON [p].[CarPlate] = [c].[CarPlate]";
         public int Id { get; set; }
         public Car Car { get; set; }
         public Decimal Price { get; set; }

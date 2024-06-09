@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using APIAndreVeiculosMicrosservicos.Sale.Data;
 using Models.DTO;
 using Models;
+using Services.Services;
 
 namespace APIAndreVeiculosMicrosservicos.Sale.Controllers
 {
@@ -19,24 +20,37 @@ namespace APIAndreVeiculosMicrosservicos.Sale.Controllers
 
         // GET: api/Sales
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Models.Sale>>> GetSale()
+        public async Task<ActionResult<IEnumerable<Models.Sale>>> GetSale(byte techType)
         {
             if (_context.Sale == null)
             {
                 return NotFound();
             }
-            return await _context.Sale
-                .Include(s => s.Car)
-                .Include(s => s.Client)
-                .Include(s => s.Client.Adress)
-                .Include(s => s.Employee)
-                .Include(s => s.Employee.Adress)
-                .Include(s => s.Employee.Role)
-                .Include(s => s.Payment)
-                .Include(s => s.Payment.CreditCard)
-                .Include(s => s.Payment.Pix)
-                .Include(s => s.Payment.Ticket)
-                .ToListAsync();
+            if (techType == 0)
+            {
+                return await _context.Sale
+                    .Include(s => s.Car)
+                    .Include(s => s.Client)
+                    .Include(s => s.Client.Adress)
+                    .Include(s => s.Employee)
+                    .Include(s => s.Employee.Adress)
+                    .Include(s => s.Employee.Role)
+                    .Include(s => s.Payment)
+                    .Include(s => s.Payment.CreditCard)
+                    .Include(s => s.Payment.Pix)
+                    .Include(s => s.Payment.Ticket)
+                    .ToListAsync();
+            }
+            else if (techType == 1)
+            {
+                return await new SaleService().GetAllSales(1);
+            }
+            else if (techType == 2)
+            {
+                return await new SaleService().GetAllSales(2);
+            }
+            return null;
+
         }
 
         // GET: api/Sales/5

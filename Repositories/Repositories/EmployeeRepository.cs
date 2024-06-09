@@ -35,7 +35,7 @@ namespace Repositories.Repositories_DAPPER
                                 ComissionValue = (Decimal)reader["ComissionValue"],
                                 Role = new Role
                                 {
-                                    Id = reader["Id"] == DBNull.Value ? 0 : (int)reader["Id"],
+                                    Id = reader["RoleId"] == DBNull.Value ? 0 : (int)reader["RoleId"],
                                     Description = reader["Description"].ToString()
                                 },
                                 Name = reader["Name"].ToString(),
@@ -44,7 +44,7 @@ namespace Repositories.Repositories_DAPPER
                                 Email = reader["Email"].ToString(),
                                 Adress = new Adress
                                 {
-                                    Id = reader["Id"] == DBNull.Value ? 0 : (int)reader["Id"],
+                                    Id = reader["AdressId"] == DBNull.Value ? 0 : (int)reader["AdressId"],
                                     PublicPlace = reader["PublicPlace"].ToString(),
                                     ZipCode = reader["ZipCode"].ToString(),
                                     District = reader["District"].ToString(),
@@ -60,7 +60,7 @@ namespace Repositories.Repositories_DAPPER
                 //DAPPER
                 else if (type == 2)
                 {
-                    var query = db.Query<Employee, Role, Adress, Employee>(Employee.GETALL,
+                    var query = db.Query<Employee, Role, Adress, Employee>(Employee.GETALLDapper,
                         (employee, role, adress) =>
                         {
                             employee.Role = role;

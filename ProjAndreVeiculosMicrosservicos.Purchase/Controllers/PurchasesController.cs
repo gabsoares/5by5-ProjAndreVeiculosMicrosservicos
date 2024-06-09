@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using APIAndreVeiculosMicrosservicos.Purchase.Data;
 using Models.DTO;
+using Services.Services;
 
 namespace APIAndreVeiculosMicrosservicos.Purchase.Controllers
 {
@@ -18,15 +19,28 @@ namespace APIAndreVeiculosMicrosservicos.Purchase.Controllers
 
         // GET: api/Purchases
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Models.Purchase>>> GetPurchase()
+        public async Task<ActionResult<IEnumerable<Models.Purchase>>> GetPurchase(byte techType)
         {
             if (_context.Purchase == null)
             {
                 return NotFound();
             }
-            return await _context.Purchase
-                .Include(p => p.Car)
-                .ToListAsync();
+
+            if (techType == 0)
+            {
+                return await _context.Purchase
+                    .Include(p => p.Car)
+                    .ToListAsync();
+            }
+            else if (techType == 1)
+            {
+                return await new PurchaseService().GetAllPurchases(1);
+            }
+            else if (techType == 2)
+            {
+                return await new PurchaseService().GetAllPurchases(2);
+            }
+            return null;
         }
 
         // GET: api/Purchases/5
