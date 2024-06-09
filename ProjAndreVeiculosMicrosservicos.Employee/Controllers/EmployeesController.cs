@@ -39,11 +39,11 @@ namespace APIAndreVeiculosMicrosservicos.Employee.Controllers
             }
             else if (techType == 1)
             {
-                return new EmployeeService().GetAllEmployees(1);
+                return await new EmployeeService().GetAllEmployees(1);
             }
             else if (techType == 2)
             {
-                return new EmployeeService().GetAllEmployees(2);
+                return await new EmployeeService().GetAllEmployees(2);
             }
             return null;
         }

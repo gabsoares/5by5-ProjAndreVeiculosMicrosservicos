@@ -3,34 +3,34 @@ using Microsoft.Data.SqlClient;
 using Models;
 using System.Configuration;
 
-namespace Repositories.Repositories_DAPPER
+namespace Repositories.Repositories
 {
-    public class RoleRepository
+    public class TicketRepository
     {
         private string Conn { get; set; }
-        public RoleRepository()
+        public TicketRepository()
         {
             Conn = ConfigurationManager.ConnectionStrings["StringConnection"].ConnectionString;
         }
-        public async Task<List<Role>> GetAllRoles(byte type)
+        public async Task<List<Ticket>> GetAllTickets(byte type)
         {
-            List<Role> roles = new();
+            List<Ticket> tickets = new();
             using (var db = new SqlConnection(Conn))
             {
                 db.Open();
                 //ADO
                 if (type == 1)
                 {
-                    var cmd = new SqlCommand(Role.GETALL, db);
+                    var cmd = new SqlCommand(Ticket.GETALL, db);
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
                         {
-                            roles.Add(new Role
+                            tickets.Add(new Ticket
                             {
                                 Id = reader.GetInt32(0),
-                                Description = reader.GetString(1),
-
+                                Number = reader.GetInt32(1),
+                                ExpirationDate = reader.GetDateTime(2)
                             });
                         }
                     }
@@ -38,19 +38,20 @@ namespace Repositories.Repositories_DAPPER
                 //DAPPER
                 else if (type == 2)
                 {
-                    var query = db.Query(Role.GETALL);
-                    foreach (var role in query)
+                    var query = db.Query(Ticket.GETALL);
+                    foreach (var ticket in query)
                     {
-                        roles.Add(new Role
+                        tickets.Add(new Ticket
                         {
-                            Id = role.Id,
-                            Description = role.Description
+                            Id = ticket.Id,
+                            Number = ticket.Number,
+                            ExpirationDate = ticket.ExpirationDate
                         });
                     }
                 }
                 db.Close();
             }
-            return roles;
+            return tickets;
         }
     }
 }

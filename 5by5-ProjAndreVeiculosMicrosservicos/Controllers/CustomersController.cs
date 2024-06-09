@@ -34,11 +34,11 @@ namespace _5by5_ProjAndreVeiculosMicrosservicos.Controllers
             }
             else if (techType == 1)
             {
-                return new CustomerService().GetAllCustomers(1);
+                return await new CustomerService().GetAllCustomers(1);
             }
             else if (techType == 2)
             {
-                return new CustomerService().GetAllCustomers(2);
+                return await new CustomerService().GetAllCustomers(2);
             }
             return null;
         }

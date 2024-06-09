@@ -24,7 +24,9 @@ namespace APIAndreVeiculosMicrosservicos.Purchase.Controllers
             {
                 return NotFound();
             }
-            return await _context.Purchase.ToListAsync();
+            return await _context.Purchase
+                .Include(p => p.Car)
+                .ToListAsync();
         }
 
         // GET: api/Purchases/5

@@ -32,11 +32,11 @@ namespace APIAndreVeiculosMicrosservicos.Adress.Controllers
             }
             else if (techType == 1)
             {
-                return new AdressServiceADODapper().GetAllAdresses(1);
+                return await new AdressServiceADODapper().GetAllAdresses(1);
             }
             else if (techType == 2)
             {
-                return new AdressServiceADODapper().GetAllAdresses(2);
+                return await new AdressServiceADODapper().GetAllAdresses(2);
             }
             return null;
         }
@@ -106,7 +106,7 @@ namespace APIAndreVeiculosMicrosservicos.Adress.Controllers
             Models.Adress adress = new Models.Adress(adressDTO);
             string cep = adress.ZipCode;
 
-            new AdressService().RetrieveAdressData(adressDTO, cep, adress);
+            await new AdressService().RetrieveAdressData(adressDTO, cep, adress);
             _context.Adress.Add(adress);
             await _context.SaveChangesAsync();
 

@@ -31,6 +31,7 @@ namespace APIAndreVeiculosMicrosservicos.Sale.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("City")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Complement")
@@ -48,6 +49,7 @@ namespace APIAndreVeiculosMicrosservicos.Sale.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UF")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ZipCode")
@@ -98,8 +100,8 @@ namespace APIAndreVeiculosMicrosservicos.Sale.Migrations
                     b.Property<string>("CardNumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ExpirationDate")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime?>("ExpirationDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("SecurityCode")
                         .HasColumnType("nvarchar(max)");
@@ -223,7 +225,7 @@ namespace APIAndreVeiculosMicrosservicos.Sale.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PixTypeId")
+                    b.Property<int?>("PixTypeId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -372,9 +374,7 @@ namespace APIAndreVeiculosMicrosservicos.Sale.Migrations
                 {
                     b.HasOne("Models.PixType", "PixType")
                         .WithMany()
-                        .HasForeignKey("PixTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PixTypeId");
 
                     b.Navigation("PixType");
                 });

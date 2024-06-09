@@ -12,9 +12,9 @@ namespace Services.Services
             _paymentRepository = new PaymentRepository();
         }
 
-        public List<Payment> GetAllPayments(byte type)
+        public async Task<List<Payment>> GetAllPayments(byte type)
         { 
-            return _paymentRepository.GetAllPayments(type);
+            return await _paymentRepository.GetAllPayments(type);
         }
     }
 }

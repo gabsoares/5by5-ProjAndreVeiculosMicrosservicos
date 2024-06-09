@@ -17,9 +17,9 @@ namespace Services.Services_DAPPER
             _customerRepository = new CustomerRepository();
         }
 
-        public List<Customer> GetAllCustomers(byte type)
+        public async Task<List<Customer>> GetAllCustomers(byte type)
         {
-            return _customerRepository.GetAllCustomers(type);
+            return await _customerRepository.GetAllCustomers(type);
         }
     }
 }

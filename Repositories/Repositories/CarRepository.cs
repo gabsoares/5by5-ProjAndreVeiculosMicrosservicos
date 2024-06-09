@@ -12,7 +12,7 @@ namespace Repositories.Repositories_DAPPER
         {
             Conn = ConfigurationManager.ConnectionStrings["StringConnection"].ConnectionString;
         }
-        public List<Car> GetAllCars(byte type)
+        public async Task<List<Car>> GetAllCars(byte type)
         {
             List<Car> cars = new();
             using (var db = new SqlConnection(Conn))

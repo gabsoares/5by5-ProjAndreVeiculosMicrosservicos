@@ -12,9 +12,9 @@ namespace Services.Services_DAPPER
             _carJobRepository = new CarJobRepository();
         }
 
-        public List<CarJob> GetAllCarJobs(byte type)
+        public async Task<List<CarJob>> GetAllCarJobs(byte type)
         {
-            return _carJobRepository.GetAllCarJobs(type);
+            return await _carJobRepository.GetAllCarJobs(type);
         }
     }
 }

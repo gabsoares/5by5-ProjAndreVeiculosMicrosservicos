@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using APIAndreVeiculosMicrosservicos.Payment.Data;
 using Models;
 using Models.DTO;
+using Services.Services;
 
 namespace APIAndreVeiculosMicrosservicos.Payment.Controllers
 {
@@ -24,13 +25,25 @@ namespace APIAndreVeiculosMicrosservicos.Payment.Controllers
 
         // GET: api/PixTypes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PixType>>> GetPixType()
+        public async Task<ActionResult<IEnumerable<PixType>>> GetPixType(byte techType)
         {
             if (_context.PixType == null)
             {
                 return NotFound();
             }
-            return await _context.PixType.ToListAsync();
+            if (techType == 0)
+            {
+                return await _context.PixType.ToListAsync();
+            }
+            else if (techType == 1)
+            {
+                return await new PixTypeService().GetAllPixTypes(1);
+            }
+            else if (techType == 2)
+            {
+                return await new PixTypeService().GetAllPixTypes(2);
+            }
+            return null;
         }
 
         // GET: api/PixTypes/5

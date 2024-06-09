@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using APIAndreVeiculosMicrosservicos.Payment.Data;
 using Models;
+using Services.Services;
 
 namespace APIAndreVeiculosMicrosservicos.Payment.Controllers
 {
@@ -18,23 +19,35 @@ namespace APIAndreVeiculosMicrosservicos.Payment.Controllers
 
         // GET: api/Tickets
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Ticket>>> GetTicket()
+        public async Task<ActionResult<IEnumerable<Ticket>>> GetTicket(byte techType)
         {
-          if (_context.Ticket == null)
-          {
-              return NotFound();
-          }
-            return await _context.Ticket.ToListAsync();
+            if (_context.Ticket == null)
+            {
+                return NotFound();
+            }
+            if (techType == 0)
+            {
+                return await _context.Ticket.ToListAsync();
+            }
+            else if (techType == 1)
+            {
+                return await new TicketService().GetAllTickets(1);
+            }
+            else if (techType == 2)
+            {
+                return await new TicketService().GetAllTickets(2);
+            }
+            return null;
         }
 
         // GET: api/Tickets/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Ticket>> GetTicket(int id)
         {
-          if (_context.Ticket == null)
-          {
-              return NotFound();
-          }
+            if (_context.Ticket == null)
+            {
+                return NotFound();
+            }
             var ticket = await _context.Ticket.FindAsync(id);
 
             if (ticket == null)
@@ -79,10 +92,10 @@ namespace APIAndreVeiculosMicrosservicos.Payment.Controllers
         [HttpPost]
         public async Task<ActionResult<Ticket>> PostTicket(Ticket ticket)
         {
-          if (_context.Ticket == null)
-          {
-              return Problem("Entity set 'APIAndreVeiculosMicrosservicosPaymentContext.Ticket'  is null.");
-          }
+            if (_context.Ticket == null)
+            {
+                return Problem("Entity set 'APIAndreVeiculosMicrosservicosPaymentContext.Ticket'  is null.");
+            }
             _context.Ticket.Add(ticket);
             await _context.SaveChangesAsync();
 

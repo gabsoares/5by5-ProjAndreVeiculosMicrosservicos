@@ -9,7 +9,7 @@ namespace Models
 {
     public class CreditCard
     {
-        public static readonly string INSERT = "INSERT INTO TB_CREDIT_CARD (CARD_NUMBER, SECURITY_CODE, EXPIRATION_DATE, CARD_HOLDER_NAME) VALUES (@CNumber, @SecCode, @ExpDate, @CHName)";
+        public static readonly string GETALL = "SELECT Id, CardNumber, SecurityCode, ExpirationDate, CardHolderName FROM dbo.CreditCard";
         public int Id { get; set; }
         public string? CardNumber { get; set; }
         public string? SecurityCode { get; set; }

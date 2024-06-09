@@ -37,7 +37,7 @@ namespace APIAndreVeiculosMicrosservicos.Adress.Services
             return null;
         }
 
-        public async void RetrieveAdressData(AdressDTO adressDTO, string cep, Models.Adress adress)
+        public async Task RetrieveAdressData(AdressDTO adressDTO, string cep, Models.Adress adress)
         {
             Models.Adress adressFilledWithCorreiosAPI = await GetAdressData(cep);
 

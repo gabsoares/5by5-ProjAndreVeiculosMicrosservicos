@@ -12,9 +12,9 @@ namespace Services.Services_DAPPER
             _roleRepository = new RoleRepository();
         }
 
-        public List<Role> GetAllRoles(byte type)
+        public async Task<List<Role>> GetAllRoles(byte type)
         {
-            return _roleRepository.GetAllRoles(type);
+            return await _roleRepository.GetAllRoles(type);
         }
     }
 }

@@ -9,9 +9,11 @@ namespace Models
 {
     public class Pix
     {
-        public static readonly string INSERT = "INSERT INTO TB_PIX (TYPE_PIX_ID, PIX_KEY) VALUES (@TpPixId, @PixKey) SELECT CAST(SCOPE_IDENTITY() AS INT)";
+        public static readonly string GETALL = "SELECT [p].[Id] AS PixId, [p].[PixKey], [p].[PixTypeId], [p0].[Id] AS PixTypeId, [p0].[Description] FROM [Pix] AS [p] LEFT JOIN [PixType] AS [p0] ON [p].[PixTypeId] = [p0].[Id]";
+        public static readonly string GETALLDapper = "SELECT [p].[Id], [p].[PixKey], [p].[PixTypeId], [p0].[Id] AS Id, [p0].[Description] FROM [Pix] AS [p] LEFT JOIN [PixType] AS [p0] ON [p].[PixTypeId] = [p0].[Id]";
+
         public int Id { get; set; }
-        public PixType PixType { get; set; }
+        public PixType? PixType { get; set; }
         public string PixKey { get; set; }
 
         public Pix()

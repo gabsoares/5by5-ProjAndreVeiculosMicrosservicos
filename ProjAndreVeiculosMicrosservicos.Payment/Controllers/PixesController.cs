@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using APIAndreVeiculosMicrosservicos.Payment.Data;
 using Models;
 using Models.DTO;
+using Services.Services;
 
 namespace APIAndreVeiculosMicrosservicos.Payment.Controllers
 {
@@ -19,15 +20,28 @@ namespace APIAndreVeiculosMicrosservicos.Payment.Controllers
 
         // GET: api/Pixes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Pix>>> GetPix()
+        public async Task<ActionResult<IEnumerable<Pix>>> GetPix(byte techType)
         {
             if (_context.Pix == null)
             {
                 return NotFound();
             }
-            return await _context.Pix
-                .Include(p => p.PixType)
-                .ToListAsync();
+            if (techType == 0)
+            {
+                return await _context.Pix
+                    .Include(p => p.PixType)
+                    .ToListAsync();
+            }
+            else if (techType == 1)
+            {
+                return await new PixService().GetAllPix(1);
+            }
+            else if (techType == 2)
+            {
+                return await new PixService().GetAllPix(2);
+            }
+            return null;
+
         }
 
         // GET: api/Pixes/5

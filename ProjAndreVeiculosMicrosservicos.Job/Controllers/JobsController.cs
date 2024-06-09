@@ -30,11 +30,11 @@ namespace APIAndreVeiculosMicrosservicos.Job.Controllers
             }
             else if (techType == 1)
             {
-                return new JobService().GetAllJobs(1);
+                return await new JobService().GetAllJobs(1);
             }
             else if (techType == 2)
             {
-                return new JobService().GetAllJobs(2);
+                return await new JobService().GetAllJobs(2);
             }
             return null;
         }

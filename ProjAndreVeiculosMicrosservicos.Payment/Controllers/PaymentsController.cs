@@ -36,11 +36,11 @@ namespace APIAndreVeiculosMicrosservicos.Payment.Controllers
             }
             else if (techType == 1)
             {
-                return new PaymentService().GetAllPayments(1);
+                return await new PaymentService().GetAllPayments(1);
             }
             else if (techType == 2)
             {
-                return new PaymentService().GetAllPayments(2);
+                return await new PaymentService().GetAllPayments(2);
             }
             return null;
 

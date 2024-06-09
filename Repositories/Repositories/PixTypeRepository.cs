@@ -1,36 +1,40 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
 using Models;
+using System;
+using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Repositories.Repositories_DAPPER
+namespace Repositories.Repositories
 {
-    public class RoleRepository
+    public class PixTypeRepository
     {
         private string Conn { get; set; }
-        public RoleRepository()
+        public PixTypeRepository()
         {
             Conn = ConfigurationManager.ConnectionStrings["StringConnection"].ConnectionString;
         }
-        public async Task<List<Role>> GetAllRoles(byte type)
+        public async Task<List<PixType>> GetAllPixTypes(byte type)
         {
-            List<Role> roles = new();
+            List<PixType> pixTypes = new();
             using (var db = new SqlConnection(Conn))
             {
                 db.Open();
                 //ADO
                 if (type == 1)
                 {
-                    var cmd = new SqlCommand(Role.GETALL, db);
+                    var cmd = new SqlCommand(PixType.GETALL, db);
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
                         {
-                            roles.Add(new Role
+                            pixTypes.Add(new PixType
                             {
                                 Id = reader.GetInt32(0),
-                                Description = reader.GetString(1),
-
+                                Description = reader.GetString(1)
                             });
                         }
                     }
@@ -38,19 +42,19 @@ namespace Repositories.Repositories_DAPPER
                 //DAPPER
                 else if (type == 2)
                 {
-                    var query = db.Query(Role.GETALL);
-                    foreach (var role in query)
+                    var query = db.Query(PixType.GETALL);
+                    foreach (var pixType in query)
                     {
-                        roles.Add(new Role
+                        pixTypes.Add(new PixType
                         {
-                            Id = role.Id,
-                            Description = role.Description
+                            Id = pixType.Id,
+                            Description = pixType.Description
                         });
                     }
                 }
                 db.Close();
             }
-            return roles;
+            return pixTypes;
         }
     }
 }

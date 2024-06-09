@@ -12,9 +12,9 @@ namespace Services.Services_DAPPER
             _employeeRepository = new EmployeeRepository();
         }
 
-        public List<Employee> GetAllEmployees(byte type)
+        public async Task<List<Employee>> GetAllEmployees(byte type)
         {
-            return _employeeRepository.GetAllEmployees(type);
+            return await _employeeRepository.GetAllEmployees(type);
         }
     }
 }

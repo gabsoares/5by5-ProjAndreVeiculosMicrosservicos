@@ -13,7 +13,7 @@ namespace Repositories.Repositories_DAPPER
             Conn = ConfigurationManager.ConnectionStrings["StringConnection"].ConnectionString;
         }
 
-        public List<Employee> GetAllEmployees(byte type)
+        public async Task<List<Employee>> GetAllEmployees(byte type)
         {
             List<Employee> employees = new();
             using (var db = new SqlConnection(Conn))

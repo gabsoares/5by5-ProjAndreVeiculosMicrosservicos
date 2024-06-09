@@ -12,9 +12,16 @@ namespace Services
             _adressRepository = new AdressRepository();
         }
 
-        public List<Adress> GetAllAdresses(byte type)
+        public async Task<List<Adress>> GetAllAdresses(byte type)
         {
-            return _adressRepository.GetAllAdresses(type);
+            try
+            {
+                return await _adressRepository.GetAllAdresses(type);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

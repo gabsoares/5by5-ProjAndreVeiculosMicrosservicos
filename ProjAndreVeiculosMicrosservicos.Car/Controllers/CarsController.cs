@@ -26,17 +26,17 @@ namespace APIAndreVeiculosMicrosservicos.Car.Controllers
             {
                 return NotFound();
             }
-            if(techType == 0)
+            if (techType == 0)
             {
                 return await _context.Car.ToListAsync();
             }
-            else if(techType == 1)
+            else if (techType == 1)
             {
-                return new Services.Services_DAPPER.CarService().GetAllCars(1);
+                return await new Services.Services_DAPPER.CarService().GetAllCars(1);
             }
-            else if(techType == 2)
+            else if (techType == 2)
             {
-                return new Services.Services_DAPPER.CarService().GetAllCars(2);
+                return await new Services.Services_DAPPER.CarService().GetAllCars(2);
             }
             return null;
         }

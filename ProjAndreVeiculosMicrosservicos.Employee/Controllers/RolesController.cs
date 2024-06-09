@@ -37,11 +37,11 @@ namespace APIAndreVeiculosMicrosservicos.Employee.Controllers
             }
             else if (techType == 1)
             {
-                return new RoleService().GetAllRoles(1);
+                return await new RoleService().GetAllRoles(1);
             }
             else if (techType == 2)
             {
-                return new RoleService().GetAllRoles(2);
+                return await new RoleService().GetAllRoles(2);
             }
             return null;
         }

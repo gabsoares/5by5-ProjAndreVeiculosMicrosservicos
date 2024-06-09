@@ -1,12 +1,7 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
 using Models;
-using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Repositories.Repositories
 {
@@ -18,7 +13,7 @@ namespace Repositories.Repositories
             Conn = ConfigurationManager.ConnectionStrings["StringConnection"].ConnectionString;
         }
 
-        public List<Payment> GetAllPayments(byte type)
+        public async Task<List<Payment>> GetAllPayments(byte type)
         {
             List<Payment> payments = new();
             using (var db = new SqlConnection(Conn))
@@ -28,6 +23,7 @@ namespace Repositories.Repositories
                 if (type == 1)
                 {
                     var cmd = new SqlCommand(Payment.GETALL, db);
+
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
@@ -74,7 +70,10 @@ namespace Repositories.Repositories
                             payment.CreditCard = creditCard;
                             payment.Ticket = ticket;
                             payment.Pix = pix;
-                            payment.Pix.PixType = pixType;
+                            if (payment.Pix != null)
+                            {
+                                payment.Pix.PixType = pixType;
+                            }
                             return payment;
                         },
                         splitOn: "Id, Id, Id, Id"

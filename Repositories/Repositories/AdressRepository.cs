@@ -13,7 +13,7 @@ namespace Repositories.Repositories_DAPPER
         {
             Conn = ConfigurationManager.ConnectionStrings["StringConnection"].ConnectionString;
         }
-        public List<Adress> GetAllAdresses(byte type)
+        public async Task<List<Adress>> GetAllAdresses(byte type)
         {
             List<Adress> adresses = new();
             AdressDTO a = new();
