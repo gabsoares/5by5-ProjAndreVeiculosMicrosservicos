@@ -72,5 +72,24 @@ namespace Repositories.Repositories_DAPPER
             }
             return customers;
         }
+
+        public async Task<Customer?> GetCustomerById(string cpf)
+        {
+            Customer customer = new();
+            //DAPPER
+            using (var db = new SqlConnection(Conn))
+            {
+                db.Open();
+
+                var query = await db.QueryAsync<Customer, Adress, Customer>(Customer.GETONE, (customer, adress) =>
+                    {
+                        customer.Adress = adress;
+                        return customer;
+                    }, new {Cpf = cpf}, splitOn: "Id");
+
+                db.Close();
+                return query.FirstOrDefault<Customer>();
+            }
+        }
     }
 }

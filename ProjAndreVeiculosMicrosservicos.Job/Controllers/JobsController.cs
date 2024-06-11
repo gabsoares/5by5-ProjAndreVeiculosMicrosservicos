@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using APIAndreVeiculosMicrosservicos.Job.Data;
 using Services.Services_DAPPER;
+using DataApi.Data;
 
 namespace APIAndreVeiculosMicrosservicos.Job.Controllers
 {
@@ -9,9 +10,9 @@ namespace APIAndreVeiculosMicrosservicos.Job.Controllers
     [ApiController]
     public class JobsController : ControllerBase
     {
-        private readonly APIAndreVeiculosMicrosservicosJobContext _context;
+        private readonly DataApiContext _context;
 
-        public JobsController(APIAndreVeiculosMicrosservicosJobContext context)
+        public JobsController(DataApiContext context)
         {
             _context = context;
         }

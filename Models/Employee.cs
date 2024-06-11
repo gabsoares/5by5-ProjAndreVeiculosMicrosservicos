@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Models.DTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,5 +14,22 @@ namespace Models
         public Role? Role { get; set; }
         public Decimal ComissionValue { get; set; }
         public Decimal Comission { get; set; }
+
+        public Employee()
+        {
+
+        }
+
+        public Employee(EmployeeDTO employeeDTO)
+        {
+            this.Name = employeeDTO.EmployeeName;
+            this.CPF = employeeDTO.EmployeeCPF;
+            this.DateOfBirth = employeeDTO.EmployeeDateOfBirth;
+            this.Phone = employeeDTO.EmployeePhone;
+            this.Email = employeeDTO.EmployeeEmail;
+            this.ComissionValue = employeeDTO.ComissionValue;
+            this.Comission = employeeDTO.Comission;
+            Role role = new Role { Id = employeeDTO.RoleId };
+        }
     }
 }

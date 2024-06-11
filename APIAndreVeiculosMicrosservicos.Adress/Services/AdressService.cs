@@ -37,9 +37,10 @@ namespace APIAndreVeiculosMicrosservicos.Adress.Services
             return null;
         }
 
-        public async Task RetrieveAdressData(AdressDTO adressDTO, string cep, Models.Adress adress)
+        public async Task<Models.Adress> RetrieveAdressData(AdressDTO adressDTO, string cep)
         {
             Models.Adress adressFilledWithCorreiosAPI = await GetAdressData(cep);
+            Models.Adress adress = new();
 
             if (adressFilledWithCorreiosAPI != null)
             {
@@ -48,6 +49,7 @@ namespace APIAndreVeiculosMicrosservicos.Adress.Services
                 adress.City = adressFilledWithCorreiosAPI.City;
                 adress.District = adressFilledWithCorreiosAPI.District;
             }
+            return adress;
         }
     }
 }

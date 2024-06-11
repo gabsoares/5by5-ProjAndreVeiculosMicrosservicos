@@ -9,6 +9,7 @@ using APIAndreVeiculosMicrosservicos.Employee.Data;
 using Models;
 using Models.DTO;
 using Services.Services_DAPPER;
+using DataApi.Data;
 
 namespace APIAndreVeiculosMicrosservicos.Employee.Controllers
 {
@@ -16,9 +17,9 @@ namespace APIAndreVeiculosMicrosservicos.Employee.Controllers
     [ApiController]
     public class RolesController : ControllerBase
     {
-        private readonly APIAndreVeiculosMicrosservicosEmployeeContext _context;
+        private readonly DataApiContext _context;
 
-        public RolesController(APIAndreVeiculosMicrosservicosEmployeeContext context)
+        public RolesController(DataApiContext context)
         {
             _context = context;
         }

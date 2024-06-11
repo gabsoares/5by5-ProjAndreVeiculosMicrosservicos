@@ -4,6 +4,7 @@ using APIAndreVeiculosMicrosservicos.Car.Data;
 using APIAndreVeiculosMicrosservicos.Car.CarService;
 using Models.DTO;
 using Services.Services_DAPPER;
+using DataApi.Data;
 
 namespace APIAndreVeiculosMicrosservicos.Car.Controllers
 {
@@ -11,9 +12,9 @@ namespace APIAndreVeiculosMicrosservicos.Car.Controllers
     [ApiController]
     public class CarsController : ControllerBase
     {
-        private readonly APIAndreVeiculosMicrosservicosCarContext _context;
+        private readonly DataApiContext _context;
 
-        public CarsController(APIAndreVeiculosMicrosservicosCarContext context)
+        public CarsController(DataApiContext context)
         {
             _context = context;
         }

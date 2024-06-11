@@ -8,6 +8,10 @@ using Microsoft.EntityFrameworkCore;
 using APIAndreVeiculosMicrosservicos.Employee.Data;
 using Models;
 using Services.Services_DAPPER;
+using Models.DTO;
+using APIAndreVeiculosMicrosservicos.Adress.Services;
+using Services;
+using DataApi.Data;
 
 namespace APIAndreVeiculosMicrosservicos.Employee.Controllers
 {
@@ -15,9 +19,9 @@ namespace APIAndreVeiculosMicrosservicos.Employee.Controllers
     [ApiController]
     public class EmployeesController : ControllerBase
     {
-        private readonly APIAndreVeiculosMicrosservicosEmployeeContext _context;
+        private readonly DataApiContext _context;
 
-        public EmployeesController(APIAndreVeiculosMicrosservicosEmployeeContext context)
+        public EmployeesController(DataApiContext context)
         {
             _context = context;
         }
@@ -101,14 +105,29 @@ namespace APIAndreVeiculosMicrosservicos.Employee.Controllers
 
         // POST: api/Employees
         [HttpPost]
-        public async Task<ActionResult<Models.Employee>> PostEmployee(Models.Employee employee)
+        public async Task<ActionResult<Models.Employee>> PostEmployee(EmployeeDTO employeeDTO)
         {
             if (_context.Employee == null)
             {
                 return Problem("Entity set 'APIAndreVeiculosMicrosservicosEmployeeContext.Employee'  is null.");
             }
-            employee.Adress = await _context.Adress.FindAsync(employee.Adress.Id);
-            employee.Role = await _context.Role.FindAsync(employee.Role.Id);
+            AdressService adressService = new();
+            Models.Employee employee = new(employeeDTO);
+
+            var adress = await adressService.RetrieveAdressData(employeeDTO.Adress, employeeDTO.Adress.ZipCode);
+            employee.Adress = adress;
+            employee.Adress.Complement = employeeDTO.Adress.Complement;
+            employee.Adress.Number = employeeDTO.Adress.Number;
+            employee.Adress.ZipCode = employeeDTO.Adress.ZipCode;
+
+            employee.Name = employeeDTO.EmployeeName;
+            employee.DateOfBirth = employeeDTO.EmployeeDateOfBirth;
+            employee.Phone = employeeDTO.EmployeePhone;
+            employee.Email = employeeDTO.EmployeeEmail;
+            employee.Role = await _context.Role.FindAsync(employeeDTO.RoleId);
+            employee.ComissionValue = employeeDTO.ComissionValue;
+            employee.Comission = employeeDTO.Comission;
+
             _context.Employee.Add(employee);
             try
             {
@@ -125,6 +144,7 @@ namespace APIAndreVeiculosMicrosservicos.Employee.Controllers
                     throw;
                 }
             }
+            new AdressServiceADODapper().InsertOne(employee.Adress);
 
             return CreatedAtAction("GetEmployee", new { id = employee.CPF }, employee);
         }

@@ -4,6 +4,7 @@ using APIAndreVeiculosMicrosservicos.Sale.Data;
 using Models.DTO;
 using Models;
 using Services.Services;
+using DataApi.Data;
 
 namespace APIAndreVeiculosMicrosservicos.Sale.Controllers
 {
@@ -11,9 +12,9 @@ namespace APIAndreVeiculosMicrosservicos.Sale.Controllers
     [ApiController]
     public class SalesController : ControllerBase
     {
-        private readonly APIAndreVeiculosMicrosservicosSaleContext _context;
+        private readonly DataApiContext _context;
 
-        public SalesController(APIAndreVeiculosMicrosservicosSaleContext context)
+        public SalesController(DataApiContext context)
         {
             _context = context;
         }

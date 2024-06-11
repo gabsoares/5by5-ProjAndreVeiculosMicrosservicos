@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using APIAndreVeiculosMicrosservicos.Purchase.Data;
 using Models.DTO;
 using Services.Services;
+using DataApi.Data;
 
 namespace APIAndreVeiculosMicrosservicos.Purchase.Controllers
 {
@@ -10,9 +11,9 @@ namespace APIAndreVeiculosMicrosservicos.Purchase.Controllers
     [ApiController]
     public class PurchasesController : ControllerBase
     {
-        private readonly APIAndreVeiculosMicrosservicosPurchaseContext _context;
+        private readonly DataApiContext _context;
 
-        public PurchasesController(APIAndreVeiculosMicrosservicosPurchaseContext context)
+        public PurchasesController(DataApiContext context)
         {
             _context = context;
         }

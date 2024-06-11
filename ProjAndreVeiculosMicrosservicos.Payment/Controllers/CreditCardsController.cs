@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using APIAndreVeiculosMicrosservicos.Payment.Data;
 using Models;
 using Services.Services;
+using DataApi.Data;
 
 namespace APIAndreVeiculosMicrosservicos.Payment.Controllers
 {
@@ -10,9 +11,9 @@ namespace APIAndreVeiculosMicrosservicos.Payment.Controllers
     [ApiController]
     public class CreditCardsController : ControllerBase
     {
-        private readonly APIAndreVeiculosMicrosservicosPaymentContext _context;
+        private readonly DataApiContext _context;
 
-        public CreditCardsController(APIAndreVeiculosMicrosservicosPaymentContext context)
+        public CreditCardsController(DataApiContext context)
         {
             _context = context;
         }

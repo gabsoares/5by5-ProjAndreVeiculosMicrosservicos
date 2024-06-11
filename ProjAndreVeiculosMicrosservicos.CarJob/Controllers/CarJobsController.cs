@@ -4,6 +4,7 @@ using APIAndreVeiculosMicrosservicos.CarJob.Data;
 using Models;
 using Models.DTO;
 using Services.Services_DAPPER;
+using DataApi.Data;
 
 namespace APIAndreVeiculosMicrosservicos.CarJob.Controllers
 {
@@ -11,9 +12,9 @@ namespace APIAndreVeiculosMicrosservicos.CarJob.Controllers
     [ApiController]
     public class CarJobsController : ControllerBase
     {
-        private readonly APIAndreVeiculosMicrosservicosCarJobContext _context;
+        private readonly DataApiContext _context;
 
-        public CarJobsController(APIAndreVeiculosMicrosservicosCarJobContext context)
+        public CarJobsController(DataApiContext context)
         {
             _context = context;
         }

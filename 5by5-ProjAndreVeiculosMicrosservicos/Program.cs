@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using _5by5_ProjAndreVeiculosMicrosservicos.Data;
+using DataApi.Data;
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<_5by5_ProjAndreVeiculosMicrosservicosContext>(options =>
+builder.Services.AddDbContext<DataApiContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("_5by5_ProjAndreVeiculosMicrosservicosContext") ?? throw new InvalidOperationException("Connection string '_5by5_ProjAndreVeiculosMicrosservicosContext' not found.")));
 
 // Add services to the container.

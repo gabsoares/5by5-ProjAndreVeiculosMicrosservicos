@@ -4,6 +4,7 @@ using APIAndreVeiculosMicrosservicos.Payment.Data;
 using Models;
 using Models.DTO;
 using Services.Services;
+using DataApi.Data;
 
 namespace APIAndreVeiculosMicrosservicos.Payment.Controllers
 {
@@ -11,9 +12,9 @@ namespace APIAndreVeiculosMicrosservicos.Payment.Controllers
     [ApiController]
     public class PixesController : ControllerBase
     {
-        private readonly APIAndreVeiculosMicrosservicosPaymentContext _context;
+        private readonly DataApiContext _context;
 
-        public PixesController(APIAndreVeiculosMicrosservicosPaymentContext context)
+        public PixesController(DataApiContext context)
         {
             _context = context;
         }

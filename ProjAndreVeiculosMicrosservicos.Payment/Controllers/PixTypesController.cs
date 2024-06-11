@@ -9,6 +9,7 @@ using APIAndreVeiculosMicrosservicos.Payment.Data;
 using Models;
 using Models.DTO;
 using Services.Services;
+using DataApi.Data;
 
 namespace APIAndreVeiculosMicrosservicos.Payment.Controllers
 {
@@ -16,9 +17,9 @@ namespace APIAndreVeiculosMicrosservicos.Payment.Controllers
     [ApiController]
     public class PixTypesController : ControllerBase
     {
-        private readonly APIAndreVeiculosMicrosservicosPaymentContext _context;
+        private readonly DataApiContext _context;
 
-        public PixTypesController(APIAndreVeiculosMicrosservicosPaymentContext context)
+        public PixTypesController(DataApiContext context)
         {
             _context = context;
         }

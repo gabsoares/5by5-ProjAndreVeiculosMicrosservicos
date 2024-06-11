@@ -5,6 +5,9 @@ using _5by5_ProjAndreVeiculosMicrosservicos.Data;
 using Models.DTO;
 using Services.Services_DAPPER;
 using APIAndreVeiculosMicrosservicos.Adress.Controllers;
+using Services;
+using APIAndreVeiculosMicrosservicos.Adress.Services;
+using DataApi.Data;
 
 namespace _5by5_ProjAndreVeiculosMicrosservicos.Controllers
 {
@@ -12,13 +15,13 @@ namespace _5by5_ProjAndreVeiculosMicrosservicos.Controllers
     [ApiController]
     public class CustomersController : ControllerBase
     {
-        private readonly _5by5_ProjAndreVeiculosMicrosservicosContext _context;
-        private readonly AdressesController _adressController;
+        private readonly DataApiContext _context;
 
-        public CustomersController(_5by5_ProjAndreVeiculosMicrosservicosContext context)
+        public CustomersController(DataApiContext context)
         {
             _context = context;
         }
+
 
         // GET: api/Customers
         [HttpGet]
@@ -70,7 +73,7 @@ namespace _5by5_ProjAndreVeiculosMicrosservicos.Controllers
         public async Task<IActionResult> PutCustomer(string id, CustomerDTO customerDTO)
         {
             Customer customer = new(customerDTO);
-            customer.Adress = await _context.Adress.FindAsync(customerDTO.AdressId);
+            customer.Adress = await _context.Adress.FindAsync(customerDTO.Adress);
             customer.Name = customerDTO.CustomerName;
             customer.DateOfBirth = customerDTO.CustomerDateOfBirth;
             customer.Phone = customerDTO.CustomerPhone;
@@ -111,14 +114,22 @@ namespace _5by5_ProjAndreVeiculosMicrosservicos.Controllers
             {
                 return Problem("Entity set '_5by5_ProjAndreVeiculosMicrosservicosContext.Customer'  is null.");
             }
+            AdressService adressService = new();
             Customer customer = new(customerDTO);
-            customer.Adress = await _context.Adress.FindAsync(customerDTO.AdressId);
+
+            var adress = await adressService.RetrieveAdressData(customerDTO.Adress, customerDTO.Adress.ZipCode);
+            customer.Adress = adress;
+            customer.Adress.Complement = customerDTO.Adress.Complement;
+            customer.Adress.Number = customerDTO.Adress.Number;
+            customer.Adress.ZipCode = customerDTO.Adress.ZipCode;
+
             customer.Name = customerDTO.CustomerName;
             customer.DateOfBirth = customerDTO.CustomerDateOfBirth;
             customer.Phone = customerDTO.CustomerPhone;
             customer.Email = customerDTO.CustomerEmail;
             customer.Income = customerDTO.CustomerIncome;
             customer.PDFDocument = customerDTO.CustomerPDFDoc;
+
             _context.Customer.Add(customer);
             try
             {
@@ -135,6 +146,7 @@ namespace _5by5_ProjAndreVeiculosMicrosservicos.Controllers
                     throw;
                 }
             }
+            new AdressServiceADODapper().InsertOne(customer.Adress);
             return CreatedAtAction("GetCustomer", new { id = customer.CPF }, customer);
         }
 

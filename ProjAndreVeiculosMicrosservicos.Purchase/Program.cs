@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using APIAndreVeiculosMicrosservicos.Purchase.Data;
+using DataApi.Data;
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<APIAndreVeiculosMicrosservicosPurchaseContext>(options =>
+builder.Services.AddDbContext<DataApiContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("APIAndreVeiculosMicrosservicosPurchaseContext") ?? throw new InvalidOperationException("Connection string 'APIAndreVeiculosMicrosservicosPurchaseContext' not found.")));
 
 // Add services to the container.
