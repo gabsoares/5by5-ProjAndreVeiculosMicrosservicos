@@ -1,17 +1,26 @@
 ﻿using System.Configuration;
+using System.Net;
 using Dapper;
 using Microsoft.Data.SqlClient;
 using Models;
 using Models.DTO;
+using MongoDB.Driver;
+using static Dapper.SqlMapper;
 
 namespace Repositories.Repositories_DAPPER
 {
     public class AdressRepository
     {
         private string Conn { get; set; }
+        private readonly string ConnMongo;
+        private readonly IMongoCollection<Adress> _adresses;
         public AdressRepository()
         {
             Conn = ConfigurationManager.ConnectionStrings["StringConnection"].ConnectionString;
+            ConnMongo = "mongodb://root:Mongo%402024%23@localhost:27017/";
+            var client = new MongoClient(ConnMongo);
+            var database = client.GetDatabase("DBProjAddress");
+            _adresses = database.GetCollection<Adress>("Address");
         }
         public async Task<List<Adress>> GetAllAdresses(byte type)
         {
@@ -72,6 +81,12 @@ namespace Repositories.Repositories_DAPPER
                 db.Close();
             }
             return adresses;
+        }
+
+        public Adress InsertOne(Adress adress)
+        {
+            _adresses.InsertOne(adress);
+            return adress;
         }
     }
 }

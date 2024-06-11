@@ -23,5 +23,11 @@ namespace Services
                 throw;
             }
         }
+
+        public Adress InsertOne(Adress adress)
+        {
+            _adressRepository.InsertOne(adress);
+            return adress;
+        }
     }
 }

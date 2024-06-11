@@ -4,6 +4,7 @@ using Models;
 using _5by5_ProjAndreVeiculosMicrosservicos.Data;
 using Models.DTO;
 using Services.Services_DAPPER;
+using APIAndreVeiculosMicrosservicos.Adress.Controllers;
 
 namespace _5by5_ProjAndreVeiculosMicrosservicos.Controllers
 {
@@ -12,6 +13,7 @@ namespace _5by5_ProjAndreVeiculosMicrosservicos.Controllers
     public class CustomersController : ControllerBase
     {
         private readonly _5by5_ProjAndreVeiculosMicrosservicosContext _context;
+        private readonly AdressesController _adressController;
 
         public CustomersController(_5by5_ProjAndreVeiculosMicrosservicosContext context)
         {
@@ -133,7 +135,6 @@ namespace _5by5_ProjAndreVeiculosMicrosservicos.Controllers
                     throw;
                 }
             }
-
             return CreatedAtAction("GetCustomer", new { id = customer.CPF }, customer);
         }
 

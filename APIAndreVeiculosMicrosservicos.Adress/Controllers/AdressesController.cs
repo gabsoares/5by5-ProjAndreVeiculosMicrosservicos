@@ -5,6 +5,7 @@ using APIAndreVeiculosMicrosservicos.Adress.Services;
 using Models.DTO;
 using Models;
 using Services;
+using Repositories.Repositories_DAPPER;
 
 namespace APIAndreVeiculosMicrosservicos.Adress.Controllers
 {
@@ -13,6 +14,7 @@ namespace APIAndreVeiculosMicrosservicos.Adress.Controllers
     public class AdressesController : ControllerBase
     {
         private readonly APIAndreVeiculosMicrosservicosAdressContext _context;
+        private AdressServiceADODapper _adressesService;
         public AdressesController(APIAndreVeiculosMicrosservicosAdressContext context)
         {
             _context = context;
@@ -108,7 +110,10 @@ namespace APIAndreVeiculosMicrosservicos.Adress.Controllers
 
             await new AdressService().RetrieveAdressData(adressDTO, cep, adress);
             _context.Adress.Add(adress);
+
             await _context.SaveChangesAsync();
+            new AdressServiceADODapper().InsertOne(adress);
+
 
             return CreatedAtAction("GetAdress", new { id = adress.Id }, adress);
         }
