@@ -8,6 +8,6 @@ namespace Models
 {
     public class Dependent : Person
     {
-        Customer customer;
+        public Customer customer;
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Models.DTO;
+using System.ComponentModel.DataAnnotations;
 
 namespace Models
 {
@@ -12,5 +13,21 @@ namespace Models
         public string DadName { get; set; }
         public string MotherName { get; set; }
         public CnhCategory Category { get; set; }
+
+        public Cnh()
+        {
+
+        }
+
+        public Cnh(CnhDTO cnhDTO)
+        {
+            this.CnhNumber = cnhDTO.CnhNumber;
+            this.DueDate = cnhDTO.DueDate;
+            this.RG = cnhDTO.RG;
+            this.CPF = cnhDTO.CPF;
+            this.DadName = cnhDTO.DadName;
+            this.MotherName = cnhDTO.MotherName;
+            CnhCategory category = new CnhCategory() { Id = cnhDTO.CategoryId };
+        }
     }
 }

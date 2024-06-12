@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using APIAndreVeiculosMicrosservicos.Adress.Services;
 using DataApi.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Models;
+using Models.DTO;
 using ProjAndreVeiculosMicrosservicos.Driver.Data;
+using Services;
 
 namespace ProjAndreVeiculosMicrosservicos.Driver.Controllers
 {
@@ -26,10 +29,10 @@ namespace ProjAndreVeiculosMicrosservicos.Driver.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Models.Driver>>> GetDriver()
         {
-          if (_context.Driver == null)
-          {
-              return NotFound();
-          }
+            if (_context.Driver == null)
+            {
+                return NotFound();
+            }
             return await _context.Driver.ToListAsync();
         }
 
@@ -37,10 +40,10 @@ namespace ProjAndreVeiculosMicrosservicos.Driver.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Models.Driver>> GetDriver(string id)
         {
-          if (_context.Driver == null)
-          {
-              return NotFound();
-          }
+            if (_context.Driver == null)
+            {
+                return NotFound();
+            }
             var driver = await _context.Driver.FindAsync(id);
 
             if (driver == null)
@@ -52,7 +55,6 @@ namespace ProjAndreVeiculosMicrosservicos.Driver.Controllers
         }
 
         // PUT: api/Drivers/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutDriver(string id, Models.Driver driver)
         {
@@ -83,18 +85,41 @@ namespace ProjAndreVeiculosMicrosservicos.Driver.Controllers
         }
 
         // POST: api/Drivers
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Models.Driver>> PostDriver(Models.Driver driver)
+        public async Task<ActionResult<Models.Driver>> PostDriver(DriverDTO driverDTO)
         {
-          if (_context.Driver == null)
-          {
-              return Problem("Entity set 'ProjAndreVeiculosMicrosservicosDriverContext.Driver'  is null.");
-          }
+            if (_context.Driver == null)
+            {
+                return Problem("Entity set 'ProjAndreVeiculosMicrosservicosDriverContext.Driver'  is null.");
+            }
+            AdressService adressService = new();
+            Models.Driver driver = new(driverDTO);
+
+            var adress = await adressService.RetrieveAdressData(driverDTO.Adress, driverDTO.Adress.ZipCode);
+            driver.Adress = adress;
+            driver.Adress.Complement = driverDTO.Adress.Complement;
+            driver.Adress.Number = driverDTO.Adress.Number;
+            driver.Adress.ZipCode = driverDTO.Adress.ZipCode;
+            driver.Name = driverDTO.DriverName;
+            driver.DateOfBirth = driverDTO.DriverDateOfBirth;
+            driver.Phone = driverDTO.DriverPhone;
+            driver.Email = driverDTO.DriverEmail;
+            driver.Cnh = new Cnh
+            {
+                CnhNumber = driverDTO.Cnh.CnhNumber,
+                DueDate = driverDTO.Cnh.DueDate,
+                RG = driverDTO.Cnh.RG,
+                CPF = driverDTO.Cnh.CPF,
+                DadName = driverDTO.Cnh.DadName,
+                MotherName = driverDTO.Cnh.MotherName,
+                Category = await _context.CnhCategory.FindAsync(driverDTO.Cnh.Category.Id)
+        };
+
             _context.Driver.Add(driver);
             try
             {
                 await _context.SaveChangesAsync();
+                new AdressServiceADODapper().InsertOne(driver.Adress);
             }
             catch (DbUpdateException)
             {
@@ -107,7 +132,6 @@ namespace ProjAndreVeiculosMicrosservicos.Driver.Controllers
                     throw;
                 }
             }
-
             return CreatedAtAction("GetDriver", new { id = driver.CPF }, driver);
         }
 

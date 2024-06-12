@@ -16,6 +16,7 @@ namespace Services.Services
         public AcceptUseTermService()
         {
             _acceptUseTermRepository = new AcceptUseTermRepository();
+            _useTermRepository = new UseTermRepository();
         }
 
         public AcceptUseTermsDTO InsertOne(AcceptUseTermsDTO term)
@@ -27,9 +28,10 @@ namespace Services.Services
         {
             var acceptUseTermDTO = _acceptUseTermRepository.Get(id);
             var httpClient = new HttpClient();
-            var response = await httpClient.GetAsync($"http://localhost:5000/Customer/{acceptUseTermDTO.CustomerCPF}");
+            var response = await httpClient.GetAsync($"https://localhost:7033/api/Customers/{acceptUseTermDTO.CustomerCPF}");
 
-            var customer = JsonConvert.DeserializeObject<Customer>(response.Content.ToString());
+            string json = await response.Content.ReadAsStringAsync();
+            Customer customer = JsonConvert.DeserializeObject<Customer>(json);
 
             var useTerm = _useTermRepository.Get(id);
             return new AcceptUseTerms
