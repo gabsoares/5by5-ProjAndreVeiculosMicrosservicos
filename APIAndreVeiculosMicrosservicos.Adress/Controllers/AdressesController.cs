@@ -15,7 +15,7 @@ namespace APIAndreVeiculosMicrosservicos.Adress.Controllers
     public class AdressesController : ControllerBase
     {
         private readonly DataApiContext _context;
-       
+
         private AdressServiceADODapper _adressesService;
         public AdressesController(DataApiContext context)
         {
@@ -71,7 +71,7 @@ namespace APIAndreVeiculosMicrosservicos.Adress.Controllers
 
             string cep = adress.ZipCode;
 
-            new AdressService().RetrieveAdressData(adressDTO, cep);
+            new AdressService().GetAdressData(cep, adressDTO);
 
             if (id != adress.Id)
             {
@@ -110,7 +110,12 @@ namespace APIAndreVeiculosMicrosservicos.Adress.Controllers
             Models.Adress adress = new Models.Adress(adressDTO);
             string cep = adress.ZipCode;
 
-            await new AdressService().RetrieveAdressData(adressDTO, cep);
+            var addressFilled = await new AdressService().GetAdressData(cep, adressDTO);
+
+            adress.PublicPlace = addressFilled.PublicPlace;
+            adress.District = addressFilled.District;
+            adress.UF = addressFilled.UF;
+            adress.City = addressFilled.City;
             _context.Adress.Add(adress);
 
             await _context.SaveChangesAsync();

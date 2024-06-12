@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using APIAndreVeiculosMicrosservicos.Adress.Services;
+﻿using APIAndreVeiculosMicrosservicos.Adress.Services;
 using DataApi.Data;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Models;
 using Models.DTO;
-using ProjAndreVeiculosMicrosservicos.Driver.Data;
 using Services;
 
 namespace ProjAndreVeiculosMicrosservicos.Driver.Controllers
@@ -93,17 +87,10 @@ namespace ProjAndreVeiculosMicrosservicos.Driver.Controllers
                 return Problem("Entity set 'ProjAndreVeiculosMicrosservicosDriverContext.Driver'  is null.");
             }
             AdressService adressService = new();
-            Models.Driver driver = new(driverDTO);
+            var adress = await adressService.GetAdressData(driverDTO.Adress.ZipCode, driverDTO.Adress);
 
-            var adress = await adressService.RetrieveAdressData(driverDTO.Adress, driverDTO.Adress.ZipCode);
+            Models.Driver driver = new(driverDTO);
             driver.Adress = adress;
-            driver.Adress.Complement = driverDTO.Adress.Complement;
-            driver.Adress.Number = driverDTO.Adress.Number;
-            driver.Adress.ZipCode = driverDTO.Adress.ZipCode;
-            driver.Name = driverDTO.DriverName;
-            driver.DateOfBirth = driverDTO.DriverDateOfBirth;
-            driver.Phone = driverDTO.DriverPhone;
-            driver.Email = driverDTO.DriverEmail;
             driver.Cnh = new Cnh
             {
                 CnhNumber = driverDTO.Cnh.CnhNumber,
@@ -113,8 +100,7 @@ namespace ProjAndreVeiculosMicrosservicos.Driver.Controllers
                 DadName = driverDTO.Cnh.DadName,
                 MotherName = driverDTO.Cnh.MotherName,
                 Category = await _context.CnhCategory.FindAsync(driverDTO.Cnh.Category.Id)
-        };
-
+            };
             _context.Driver.Add(driver);
             try
             {

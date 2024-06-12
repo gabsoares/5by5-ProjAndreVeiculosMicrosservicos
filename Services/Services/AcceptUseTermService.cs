@@ -2,21 +2,18 @@
 using Models.DTO;
 using Newtonsoft.Json;
 using Repositories.Repositories;
-using Repositories.Repositories_DAPPER;
-using System.Drawing.Text;
-using System.Text.Json.Serialization;
 
 namespace Services.Services
 {
     public class AcceptUseTermService
     {
         private AcceptUseTermRepository _acceptUseTermRepository;
-        private UseTermRepository _useTermRepository;
+        private UseTermService _useTermService;
 
         public AcceptUseTermService()
         {
             _acceptUseTermRepository = new AcceptUseTermRepository();
-            _useTermRepository = new UseTermRepository();
+            _useTermService = new UseTermService();
         }
 
         public AcceptUseTermsDTO InsertOne(AcceptUseTermsDTO term)
@@ -31,9 +28,8 @@ namespace Services.Services
             var response = await httpClient.GetAsync($"https://localhost:7033/api/Customers/{acceptUseTermDTO.CustomerCPF}");
 
             string json = await response.Content.ReadAsStringAsync();
-            Customer customer = JsonConvert.DeserializeObject<Customer>(json);
-
-            var useTerm = _useTermRepository.Get(id);
+            var customer = JsonConvert.DeserializeObject<Customer>(json);
+            var useTerm = _useTermService.GetById(acceptUseTermDTO.UseTermId);
             return new AcceptUseTerms
             {
                 Id = id,

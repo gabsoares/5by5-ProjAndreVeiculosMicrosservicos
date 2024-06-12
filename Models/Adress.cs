@@ -11,25 +11,25 @@ namespace Models
         [JsonProperty("id")]
         public int Id { get; set; }
 
-        [JsonProperty("logradouro")]
+        [JsonProperty("publicPlace")]
         public string PublicPlace { get; set; }
 
-        [JsonProperty("cep")]
+        [JsonProperty("zipCode")]
         public string ZipCode { get; set; }
 
-        [JsonProperty("bairro")]
+        [JsonProperty("district")]
         public string District { get; set; }
 
-        [JsonProperty("complemento")]
+        [JsonProperty("complement")]
         public string? Complement { get; set; }
 
-        [JsonProperty("numero")]
+        [JsonProperty("number")]
         public int Number { get; set; }
 
         [JsonProperty("uf")]
         public string UF { get; set; }
 
-        [JsonProperty("localidade")]
+        [JsonProperty("city")]
         public string City { get; set; }
 
         public Adress()

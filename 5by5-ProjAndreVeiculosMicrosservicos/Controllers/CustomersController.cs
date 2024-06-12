@@ -117,7 +117,7 @@ namespace _5by5_ProjAndreVeiculosMicrosservicos.Controllers
             AdressService adressService = new();
             Customer customer = new(customerDTO);
 
-            var adress = await adressService.RetrieveAdressData(customerDTO.Adress, customerDTO.Adress.ZipCode);
+            var adress = await adressService.GetAdressData(customerDTO.Adress.ZipCode, customerDTO.Adress);
             customer.Adress = adress;
             customer.Adress.Complement = customerDTO.Adress.Complement;
             customer.Adress.Number = customerDTO.Adress.Number;

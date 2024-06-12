@@ -8,7 +8,7 @@ namespace APIAndreVeiculosMicrosservicos.Adress.Services
     {
         private readonly string BaseUrl = "https://viacep.com.br/ws";
 
-        public async Task<Models.Adress> GetAdressData(string cep)
+        public async Task<Models.Adress> GetAdressData(string cep, AdressDTO adressDTO)
         {
             try
             {
@@ -21,8 +21,17 @@ namespace APIAndreVeiculosMicrosservicos.Adress.Services
                     if (response.IsSuccessStatusCode)
                     {
                         string json = await response.Content.ReadAsStringAsync();
-                        Models.Adress adress = JsonConvert.DeserializeObject<Models.Adress>(json);
-                        return adress;
+                        ViaCepDTO correios = JsonConvert.DeserializeObject<ViaCepDTO>(json);
+                        return new Models.Adress
+                        {
+                            PublicPlace = correios.PublicPlace,
+                            District = correios.District,
+                            City = correios.City,
+                            UF = correios.UF,
+                            Complement = adressDTO.Complement,
+                            ZipCode = adressDTO.ZipCode,
+                            Number = adressDTO.Number
+                        };
                     }
                     else
                     {
@@ -35,21 +44,6 @@ namespace APIAndreVeiculosMicrosservicos.Adress.Services
                 throw;
             }
             return null;
-        }
-
-        public async Task<Models.Adress> RetrieveAdressData(AdressDTO adressDTO, string cep)
-        {
-            Models.Adress adressFilledWithCorreiosAPI = await GetAdressData(cep);
-            Models.Adress adress = new();
-
-            if (adressFilledWithCorreiosAPI != null)
-            {
-                adress.PublicPlace = adressFilledWithCorreiosAPI.PublicPlace;
-                adress.UF = adressFilledWithCorreiosAPI.UF;
-                adress.City = adressFilledWithCorreiosAPI.City;
-                adress.District = adressFilledWithCorreiosAPI.District;
-            }
-            return adress;
         }
     }
 }
