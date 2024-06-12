@@ -5,10 +5,9 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Models
+namespace Models;
+
+public class Driver : Person
 {
-    public class Driver : Person
-    {
-        Cnh Cnh {  get; set; }
-    }
+    public Cnh Cnh { get; set; }
 }

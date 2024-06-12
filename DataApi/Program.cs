@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using DataApi.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<DataApiContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DataApiContext") ?? throw new InvalidOperationException("Connection string 'DataApiContext' not found.")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DataApiContext") ??
+                         throw new InvalidOperationException("Connection string 'DataApiContext' not found.")));
 
 // Add services to the container.
 

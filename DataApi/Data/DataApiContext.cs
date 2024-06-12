@@ -29,6 +29,7 @@ namespace DataApi.Data
         public DbSet<Models.Adress>? Adress { get; set; }
         public DbSet<Models.Sale>? Sale { get; set; }
         public DbSet<Models.FinancialPending>? FinancialPending { get; set; }
+        public DbSet<Models.Financing>? Financing { get; set; }
         public DbSet<Models.Dependent>? Dependent { get; set; }
         public DbSet<Models.Insurance>? Insurance { get; set; }
         public DbSet<Models.Driver>? Driver { get; set; }
