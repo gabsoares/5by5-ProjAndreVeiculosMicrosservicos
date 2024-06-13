@@ -4,6 +4,7 @@ using DataApi.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataApi.Migrations
 {
     [DbContext(typeof(DataApiContext))]
-    partial class DataApiContextModelSnapshot : ModelSnapshot
+    [Migration("20240613014003_v4")]
+    partial class v4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -249,9 +251,6 @@ namespace DataApi.Migrations
                     b.Property<int?>("AdressId")
                         .HasColumnType("int");
 
-                    b.Property<string>("CustomerCPF")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
 
@@ -267,8 +266,6 @@ namespace DataApi.Migrations
                     b.HasKey("CPF");
 
                     b.HasIndex("AdressId");
-
-                    b.HasIndex("CustomerCPF");
 
                     b.ToTable("Dependent");
                 });
@@ -661,13 +658,7 @@ namespace DataApi.Migrations
                         .WithMany()
                         .HasForeignKey("AdressId");
 
-                    b.HasOne("Models.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerCPF");
-
                     b.Navigation("Adress");
-
-                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("Models.Driver", b =>

@@ -114,7 +114,7 @@ namespace APIAndreVeiculosMicrosservicos.Employee.Controllers
             AdressService adressService = new();
             Models.Employee employee = new(employeeDTO);
 
-            var adress = await adressService.RetrieveAdressData(employeeDTO.Adress, employeeDTO.Adress.ZipCode);
+            var adress = await adressService.GetAdressData(employeeDTO.Adress.ZipCode, employeeDTO.Adress);
             employee.Adress = adress;
             employee.Adress.Complement = employeeDTO.Adress.Complement;
             employee.Adress.Number = employeeDTO.Adress.Number;
