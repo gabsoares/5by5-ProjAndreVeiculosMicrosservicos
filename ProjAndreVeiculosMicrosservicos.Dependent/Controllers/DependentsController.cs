@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using APIAndreVeiculosMicrosservicos.Adress.Controllers;
 using APIAndreVeiculosMicrosservicos.Adress.Services;
 using DataApi.Data;
 using Microsoft.AspNetCore.Http;
@@ -22,12 +23,14 @@ namespace ProjAndreVeiculosMicrosservicos.Dependent.Controllers
         private readonly DataApiContext _context;
         private readonly DependentService _dependentService;
         private readonly AdressService _adressService;
+        private readonly AdressesController _adressController;
 
         public DependentsController(DataApiContext context)
         {
             _context = context;
             _dependentService = new DependentService();
             _adressService = new AdressService();
+            _adressController = new AdressesController(context);
         }
 
         // GET: api/Dependents
@@ -38,7 +41,7 @@ namespace ProjAndreVeiculosMicrosservicos.Dependent.Controllers
             {
                 return NotFound();
             }
-            return null;
+            return _dependentService.GetAllDependents();
         }
 
         // GET: api/Dependents/5
@@ -75,9 +78,10 @@ namespace ProjAndreVeiculosMicrosservicos.Dependent.Controllers
             }
 
             var adress = await _adressService.GetAdressData(dependentDTO.Adress.ZipCode, dependentDTO.Adress);
-
+            int adressId = _adressController.PostAdress(dependentDTO.Adress).Result.Value;
             dependent.Customer = customer;
             dependent.Adress = adress;
+            dependent.Adress.Id = adressId;
 
             _dependentService.Insert(dependent);
 

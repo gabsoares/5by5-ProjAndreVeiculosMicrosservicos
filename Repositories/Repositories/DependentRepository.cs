@@ -1,6 +1,8 @@
 ﻿using Microsoft.Data.SqlClient;
 using Models;
 using System.Configuration;
+using static MongoDB.Bson.Serialization.Serializers.SerializerHelper;
+using System.Reflection.Emit;
 
 namespace Repositories.Repositories
 {
@@ -30,6 +32,61 @@ namespace Repositories.Repositories
                 db.Close();
             }
             return dependent.CPF;
+        }
+
+        public List<Dependent> GetAllDependents()
+        {
+            List<Dependent> dependents = new();
+            using (var db = new SqlConnection(Conn))
+            {
+                db.Open();
+                var cmd = new SqlCommand { Connection = db };
+
+                cmd.CommandText = "SELECT [d].[CPF], [d].[AdressId], [d].[CustomerCPF], [d].[DateOfBirth], [d].[Email], [d].[Name], [d].[Phone], [c].[CPF], [c].[AdressId], [c].[DateOfBirth], [c].[Email], [c].[Income], [c].[Name], [c].[PDFDocument], [c].[Phone], [a].[Id], [a].[City], [a].[Complement], [a].[District], [a].[Number], [a].[PublicPlace], [a].[UF], [a].[ZipCode] FROM [Dependent] AS[d] LEFT JOIN[Customer] AS [c] ON [d].[CustomerCPF] = [c].[CPF] LEFT JOIN [Adress] AS[a] ON[d].[AdressId] = [a].[Id]";
+
+                using(var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        dependents.Add(new Dependent
+                        {
+                            CPF = reader.GetString(0),
+                            Adress = new()
+                            {
+                                Id = reader.GetInt32(1),
+                                City = reader.GetString(16),
+                                Complement = reader.GetString(17),
+                                District = reader.GetString(18),
+                                Number = reader.GetInt32(19),
+                                PublicPlace = reader.GetString(20),
+                                UF = reader.GetString(21),
+                                ZipCode = reader.GetString(22)
+                            },
+                            Customer = new()
+                            {
+                                CPF = reader.GetString(2),
+                                Adress = new()
+                                {
+                                    Id = reader.GetInt32(8)
+                                },
+                                DateOfBirth = reader.GetDateTime(9),
+                                Email = reader.GetString(10),
+                                Income = reader.GetDecimal(11),
+                                Name = reader.GetString(12),
+                                PDFDocument = reader.GetString(13),
+                                Phone = reader.GetString(14)
+
+                            },
+                            DateOfBirth = reader.GetDateTime(3),
+                            Email = reader.GetString(4),
+                            Name = reader.GetString(5),
+                            Phone = reader.GetString(6),
+                        });
+                    }
+                }
+                db.Close();
+            }
+            return dependents;
         }
     }
 }

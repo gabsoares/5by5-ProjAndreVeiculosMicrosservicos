@@ -100,7 +100,7 @@ namespace APIAndreVeiculosMicrosservicos.Adress.Controllers
 
         // POST: api/Adresses
         [HttpPost]
-        public async Task<ActionResult<Models.Adress>> PostAdress(AdressDTO adressDTO)
+        public async Task<ActionResult<int>> PostAdress(AdressDTO adressDTO)
         {
             if (_context.Adress == null)
             {
@@ -122,7 +122,7 @@ namespace APIAndreVeiculosMicrosservicos.Adress.Controllers
             new AdressServiceADODapper().InsertOne(adress);
 
 
-            return CreatedAtAction("GetAdress", new { id = adress.Id }, adress);
+            return adress.Id;
         }
 
         // DELETE: api/Adresses/5

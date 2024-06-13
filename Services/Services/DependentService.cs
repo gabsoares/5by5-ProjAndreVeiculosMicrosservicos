@@ -21,5 +21,10 @@ namespace Services.Services
         {
             return _dependentRepository.Insert(dependent);
         }
+
+        public List<Dependent> GetAllDependents()
+        {
+            return _dependentRepository.GetAllDependents();
+        }
     }
 }
