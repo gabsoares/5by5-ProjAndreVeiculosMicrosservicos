@@ -7,7 +7,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Models;
+using Models.DTO;
 using ProjAndreVeiculosMicrosservicos.Isurance.Data;
+using Services;
+using Services.Services;
 
 namespace ProjAndreVeiculosMicrosservicos.Isurance.Controllers
 {
@@ -16,31 +19,32 @@ namespace ProjAndreVeiculosMicrosservicos.Isurance.Controllers
     public class InsurancesController : ControllerBase
     {
         private readonly DataApiContext _context;
-
+        private readonly InsuranceService _insuranceService;
         public InsurancesController(DataApiContext context)
         {
             _context = context;
+            _insuranceService = new InsuranceService();
         }
 
         // GET: api/Insurances
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Insurance>>> GetInsurance()
         {
-          if (_context.Insurance == null)
-          {
-              return NotFound();
-          }
-            return await _context.Insurance.ToListAsync();
+            if (_context.Insurance == null)
+            {
+                return NotFound();
+            }
+            return await _insuranceService.GetAllInsurances();
         }
 
         // GET: api/Insurances/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Insurance>> GetInsurance(int id)
         {
-          if (_context.Insurance == null)
-          {
-              return NotFound();
-          }
+            if (_context.Insurance == null)
+            {
+                return NotFound();
+            }
             var insurance = await _context.Insurance.FindAsync(id);
 
             if (insurance == null)
@@ -51,70 +55,25 @@ namespace ProjAndreVeiculosMicrosservicos.Isurance.Controllers
             return insurance;
         }
 
-        // PUT: api/Insurances/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutInsurance(int id, Insurance insurance)
-        {
-            if (id != insurance.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(insurance).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!InsuranceExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
         // POST: api/Insurances
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Insurance>> PostInsurance(Insurance insurance)
-        {
-          if (_context.Insurance == null)
-          {
-              return Problem("Entity set 'ProjAndreVeiculosMicrosservicosIsuranceContext.Insurance'  is null.");
-          }
-            _context.Insurance.Add(insurance);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetInsurance", new { id = insurance.Id }, insurance);
-        }
-
-        // DELETE: api/Insurances/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteInsurance(int id)
+        public async Task<ActionResult<Insurance>> PostInsurance(InsuranceDTO insuranceDTO)
         {
             if (_context.Insurance == null)
             {
-                return NotFound();
+                return Problem("Entity set 'ProjAndreVeiculosMicrosservicosIsuranceContext.Insurance' is null.");
             }
-            var insurance = await _context.Insurance.FindAsync(id);
-            if (insurance == null)
-            {
-                return NotFound();
-            }
+            Insurance insurance = new Insurance(insuranceDTO);
+            var carPlate = _context.Car.Where(c => c.CarPlate == insuranceDTO.CarPlate).FirstOrDefault();
+            var customer = _context.Customer.Where(c => c.CPF == insuranceDTO.CustomerCPF).FirstOrDefault();
+            var driver = _context.Driver.Where(d => d.CPF == insuranceDTO.DriverCPF).FirstOrDefault();
 
-            _context.Insurance.Remove(insurance);
-            await _context.SaveChangesAsync();
+            insurance.Car = carPlate;
+            insurance.Customer = customer;
+            insurance.Driver = driver;
 
-            return NoContent();
+            insurance.Id = _insuranceService.InsertInsurance(insurance).Result;
+            return CreatedAtAction("GetInsurance", new { id = insurance.Id }, insurance);
         }
 
         private bool InsuranceExists(int id)
