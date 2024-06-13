@@ -9,7 +9,7 @@ namespace DataApi.Data
 {
     public class DataApiContext : DbContext
     {
-        public DataApiContext(DbContextOptions<DataApiContext> options)
+        public DataApiContext (DbContextOptions<DataApiContext> options)
             : base(options)
         { }
         public DbSet<Car> Car { get; set; } = default!;

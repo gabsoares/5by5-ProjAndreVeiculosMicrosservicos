@@ -5,21 +5,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Models.DTO;
 
-namespace Services.Services_DAPPER
+namespace Services.Services_DAPPER;
+
+public class CustomerService
 {
-    public class CustomerService
+    private CustomerRepository _customerRepository;
+
+    public CustomerService()
     {
-        private CustomerRepository _customerRepository;
+        _customerRepository = new CustomerRepository();
+    }
 
-        public CustomerService()
-        {
-            _customerRepository = new CustomerRepository();
-        }
-
-        public async Task<List<Customer>> GetAllCustomers(byte type)
-        {
-            return await _customerRepository.GetAllCustomers(type);
-        }
+    public async Task<List<Customer>> GetAllCustomers(byte type)
+    {
+        return await _customerRepository.GetAllCustomers(type);
     }
 }

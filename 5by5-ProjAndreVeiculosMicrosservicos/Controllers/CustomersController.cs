@@ -22,28 +22,19 @@ namespace _5by5_ProjAndreVeiculosMicrosservicos.Controllers
             _context = context;
         }
 
+
         // GET: api/Customers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Customer>>> GetCustomer(int techType)
         {
-            if (_context.Customer == null)
-            {
-                return NotFound();
-            }
+            if (_context.Customer == null) return NotFound();
             if (techType == 0)
-            {
                 return await _context.Customer
                     .Include(c => c.Adress)
                     .ToListAsync();
-            }
             else if (techType == 1)
-            {
                 return await new CustomerService().GetAllCustomers(1);
-            }
-            else if (techType == 2)
-            {
-                return await new CustomerService().GetAllCustomers(2);
-            }
+            else if (techType == 2) return await new CustomerService().GetAllCustomers(2);
             return null;
         }
 
@@ -51,18 +42,12 @@ namespace _5by5_ProjAndreVeiculosMicrosservicos.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Customer>> GetCustomer(string id)
         {
-            if (_context.Customer == null)
-            {
-                return NotFound();
-            }
+            if (_context.Customer == null) return NotFound();
             var customer = await _context.Customer
                 .Include(c => c.Adress)
                 .FirstOrDefaultAsync(c => c.CPF == id);
 
-            if (customer == null)
-            {
-                return NotFound();
-            }
+            if (customer == null) return NotFound();
 
             return customer;
         }
@@ -79,10 +64,7 @@ namespace _5by5_ProjAndreVeiculosMicrosservicos.Controllers
             customer.Email = customerDTO.CustomerEmail;
             customer.Income = customerDTO.CustomerIncome;
             customer.PDFDocument = customerDTO.CustomerPDFDoc;
-            if (id != customer.CPF)
-            {
-                return BadRequest();
-            }
+            if (id != customer.CPF) return BadRequest();
 
             _context.Entry(customer).State = EntityState.Modified;
 
@@ -93,13 +75,9 @@ namespace _5by5_ProjAndreVeiculosMicrosservicos.Controllers
             catch (DbUpdateConcurrencyException)
             {
                 if (!CustomerExists(id))
-                {
                     return NotFound();
-                }
                 else
-                {
                     throw;
-                }
             }
 
             return NoContent();
@@ -110,29 +88,24 @@ namespace _5by5_ProjAndreVeiculosMicrosservicos.Controllers
         public async Task<ActionResult<Customer>> PostCustomer(CustomerDTO customerDTO)
         {
             if (_context.Customer == null)
-            {
                 return Problem("Entity set '_5by5_ProjAndreVeiculosMicrosservicosContext.Customer'  is null.");
-            }
             AdressService adressService = new();
             Customer customer = new(customerDTO);
-            var adress = await adressService.GetAdressData(customerDTO.Adress.ZipCode, customerDTO.Adress);
-            customer.Adress = adress;
-            _context.Customer.Add(customer);
+
             try
             {
+                customer.Adress = await adressService.GetAdressData(customerDTO.Adress.ZipCode, customerDTO.Adress);
+                _context.Customer.Add(customer);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException)
             {
                 if (CustomerExists(customer.CPF))
-                {
                     return Conflict();
-                }
                 else
-                {
                     throw;
-                }
             }
+
             new AdressServiceADODapper().InsertOne(customer.Adress);
             return CreatedAtAction("GetCustomer", new { id = customer.CPF }, customer);
         }
@@ -141,15 +114,9 @@ namespace _5by5_ProjAndreVeiculosMicrosservicos.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCustomer(string id)
         {
-            if (_context.Customer == null)
-            {
-                return NotFound();
-            }
+            if (_context.Customer == null) return NotFound();
             var customer = await _context.Customer.FindAsync(id);
-            if (customer == null)
-            {
-                return NotFound();
-            }
+            if (customer == null) return NotFound();
 
             _context.Customer.Remove(customer);
             await _context.SaveChangesAsync();

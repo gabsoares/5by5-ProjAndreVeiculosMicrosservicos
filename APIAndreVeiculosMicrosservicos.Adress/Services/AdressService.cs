@@ -15,9 +15,7 @@ namespace APIAndreVeiculosMicrosservicos.Adress.Services
                 using (HttpClient client = new HttpClient())
                 {
                     string url = $"{BaseUrl}/{cep}/json/";
-
                     HttpResponseMessage response = await client.GetAsync(url);
-
                     if (response.IsSuccessStatusCode)
                     {
                         string json = await response.Content.ReadAsStringAsync();

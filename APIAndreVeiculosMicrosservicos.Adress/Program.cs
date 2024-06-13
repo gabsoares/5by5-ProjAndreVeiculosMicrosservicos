@@ -4,7 +4,7 @@ using APIAndreVeiculosMicrosservicos.Adress.Data;
 using DataApi.Data;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<DataApiContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DataApiContext") ?? throw new InvalidOperationException("Connection string 'DataApiContext' not found.")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("APIAndreVeiculosMicrosservicosAdressContext") ?? throw new InvalidOperationException("Connection string 'APIAndreVeiculosMicrosservicosAdressContext' not found.")));
 
 // Add services to the container.
 

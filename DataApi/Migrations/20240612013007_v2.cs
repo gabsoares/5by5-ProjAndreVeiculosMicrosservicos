@@ -5,10 +5,17 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataApi.Migrations
 {
-    public partial class v3 : Migration
+    public partial class v2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AddColumn<long>(
+                name: "CnhNumber",
+                table: "Driver",
+                type: "bigint",
+                nullable: false,
+                defaultValue: 0L);
+
             migrationBuilder.CreateTable(
                 name: "Bank",
                 columns: table => new
@@ -50,6 +57,11 @@ namespace DataApi.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Driver_CnhNumber",
+                table: "Driver",
+                column: "CnhNumber");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Financing_BankCNPJ",
                 table: "Financing",
                 column: "BankCNPJ");
@@ -58,15 +70,35 @@ namespace DataApi.Migrations
                 name: "IX_Financing_SaleId",
                 table: "Financing",
                 column: "SaleId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Driver_Cnh_CnhNumber",
+                table: "Driver",
+                column: "CnhNumber",
+                principalTable: "Cnh",
+                principalColumn: "CnhNumber",
+                onDelete: ReferentialAction.Cascade);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Driver_Cnh_CnhNumber",
+                table: "Driver");
+
             migrationBuilder.DropTable(
                 name: "Financing");
 
             migrationBuilder.DropTable(
                 name: "Bank");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Driver_CnhNumber",
+                table: "Driver");
+
+            migrationBuilder.DropColumn(
+                name: "CnhNumber",
+                table: "Driver");
         }
     }
 }

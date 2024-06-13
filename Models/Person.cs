@@ -2,28 +2,19 @@
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 
-namespace Models
+namespace Models;
+
+public abstract class Person
 {
-    public abstract class Person
-    {
-        [Key]
-        [BsonId]
-        [JsonProperty("cpf")]
-        public string CPF { get; set; }
+    [Key] [BsonId] [JsonProperty("cpf")] public string CPF { get; set; }
 
-        [JsonProperty("name")]
-        public string? Name { get; set; }
+    [JsonProperty("name")] public string? Name { get; set; }
 
-        [JsonProperty("dateOfBirth")]
-        public DateTime DateOfBirth { get; set; }
+    [JsonProperty("dateOfBirth")] public DateTime DateOfBirth { get; set; }
 
-        [JsonProperty("adress")]
-        public Adress? Adress { get; set; }
+    [JsonProperty("adress")] public Adress? Adress { get; set; }
 
-        [JsonProperty("phone")]
-        public string? Phone { get; set; }
+    [JsonProperty("phone")] public string? Phone { get; set; }
 
-        [JsonProperty("email")]
-        public string? Email { get; set; }
-    }
+    [JsonProperty("email")] public string? Email { get; set; }
 }

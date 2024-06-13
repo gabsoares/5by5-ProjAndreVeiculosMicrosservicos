@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataApi.Migrations
 {
     [DbContext(typeof(DataApiContext))]
-    [Migration("20240611224315_v2")]
+    [Migration("20240612013007_v2")]
     partial class v2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -61,6 +61,23 @@ namespace DataApi.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Adress");
+                });
+
+            modelBuilder.Entity("Models.Bank", b =>
+                {
+                    b.Property<string>("CNPJ")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("BankName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("FoundationDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("CNPJ");
+
+                    b.ToTable("Bank");
                 });
 
             modelBuilder.Entity("Models.Car", b =>
@@ -355,6 +372,33 @@ namespace DataApi.Migrations
                     b.HasIndex("CustomerCPF");
 
                     b.ToTable("FinancialPending");
+                });
+
+            modelBuilder.Entity("Models.Financing", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("BankCNPJ")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("FinancingDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("SaleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BankCNPJ");
+
+                    b.HasIndex("SaleId");
+
+                    b.ToTable("Financing");
                 });
 
             modelBuilder.Entity("Models.Insurance", b =>
@@ -656,6 +700,25 @@ namespace DataApi.Migrations
                         .HasForeignKey("CustomerCPF");
 
                     b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("Models.Financing", b =>
+                {
+                    b.HasOne("Models.Bank", "Bank")
+                        .WithMany()
+                        .HasForeignKey("BankCNPJ")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Models.Sale", "Sale")
+                        .WithMany()
+                        .HasForeignKey("SaleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Bank");
+
+                    b.Navigation("Sale");
                 });
 
             modelBuilder.Entity("Models.Insurance", b =>
