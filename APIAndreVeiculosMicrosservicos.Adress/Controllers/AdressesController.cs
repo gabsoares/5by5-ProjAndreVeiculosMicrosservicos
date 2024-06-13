@@ -71,7 +71,7 @@ namespace APIAndreVeiculosMicrosservicos.Adress.Controllers
 
             string cep = adress.ZipCode;
 
-            new AdressService().RetrieveAdressData(adressDTO, cep);
+            new AdressService().GetAdressData(cep, adressDTO);
 
             if (id != adress.Id)
             {
@@ -110,7 +110,7 @@ namespace APIAndreVeiculosMicrosservicos.Adress.Controllers
             Models.Adress adress = new Models.Adress(adressDTO);
             string cep = adress.ZipCode;
 
-            await new AdressService().RetrieveAdressData(adressDTO, cep);
+            await new AdressService().GetAdressData(cep, adressDTO);
             _context.Adress.Add(adress);
 
             await _context.SaveChangesAsync();

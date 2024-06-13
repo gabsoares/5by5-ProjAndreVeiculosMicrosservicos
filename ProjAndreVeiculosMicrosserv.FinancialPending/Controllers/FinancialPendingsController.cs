@@ -95,10 +95,10 @@ public class FinancialPendingsController : ControllerBase
             Value = financialPendingDto.Value
         };
 
-        await _context.FinancialPending.AddAsync(financialPending);
+        var result = await _context.FinancialPending.AddAsync(financialPending);
         await _context.SaveChangesAsync();
 
-        return CreatedAtAction("GetFinancialPending", new { id = financialPendingDto.Id }, financialPendingDto);
+        return CreatedAtAction("GetFinancialPending", new { id = result.Entity.Id }, financialPending);
     }
 
     // DELETE: api/FinancialPendings/5
