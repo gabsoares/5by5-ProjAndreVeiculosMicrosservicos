@@ -22,7 +22,6 @@ namespace _5by5_ProjAndreVeiculosMicrosservicos.Controllers
             _context = context;
         }
 
-
         // GET: api/Customers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Customer>>> GetCustomer(int techType)
@@ -116,20 +115,8 @@ namespace _5by5_ProjAndreVeiculosMicrosservicos.Controllers
             }
             AdressService adressService = new();
             Customer customer = new(customerDTO);
-
             var adress = await adressService.GetAdressData(customerDTO.Adress.ZipCode, customerDTO.Adress);
             customer.Adress = adress;
-            customer.Adress.Complement = customerDTO.Adress.Complement;
-            customer.Adress.Number = customerDTO.Adress.Number;
-            customer.Adress.ZipCode = customerDTO.Adress.ZipCode;
-
-            customer.Name = customerDTO.CustomerName;
-            customer.DateOfBirth = customerDTO.CustomerDateOfBirth;
-            customer.Phone = customerDTO.CustomerPhone;
-            customer.Email = customerDTO.CustomerEmail;
-            customer.Income = customerDTO.CustomerIncome;
-            customer.PDFDocument = customerDTO.CustomerPDFDoc;
-
             _context.Customer.Add(customer);
             try
             {
