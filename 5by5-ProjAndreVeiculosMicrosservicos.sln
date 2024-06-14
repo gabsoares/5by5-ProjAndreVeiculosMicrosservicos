@@ -27,21 +27,21 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "APIAndreVeiculosMicrosservi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "APIAndreVeiculosMicrosservicos.Adress", "APIAndreVeiculosMicrosservicos.Adress\APIAndreVeiculosMicrosservicos.Adress.csproj", "{67639F17-C439-4388-81CE-D879F2A8BAAA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjAndreVeiculosMicrosservicos.AcceptUseTerms", "ProjAndreVeiculosMicrosservicos.AcceptUseTerms\ProjAndreVeiculosMicrosservicos.AcceptUseTerms.csproj", "{9E471D90-5148-4664-8289-583562596985}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjAndreVeiculosMicrosservicos.AcceptUseTerms", "ProjAndreVeiculosMicrosservicos.AcceptUseTerms\ProjAndreVeiculosMicrosservicos.AcceptUseTerms.csproj", "{9E471D90-5148-4664-8289-583562596985}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjAndreVeiculosMicrosservicos.Bank", "ProjAndreVeiculosMicrosservicos.Bank\ProjAndreVeiculosMicrosservicos.Bank.csproj", "{113BA02A-8662-4B72-A2CC-5D2AD5FE48E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjAndreVeiculosMicrosservicos.Bank", "ProjAndreVeiculosMicrosservicos.Bank\ProjAndreVeiculosMicrosservicos.Bank.csproj", "{113BA02A-8662-4B72-A2CC-5D2AD5FE48E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjAndreVeiculosMicrosserv.FinancialPending", "ProjAndreVeiculosMicrosserv.FinancialPending\ProjAndreVeiculosMicrosserv.FinancialPending.csproj", "{90864502-F351-467E-9A26-8DF5B7C0A1D5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjAndreVeiculosMicrosserv.FinancialPending", "ProjAndreVeiculosMicrosserv.FinancialPending\ProjAndreVeiculosMicrosserv.FinancialPending.csproj", "{90864502-F351-467E-9A26-8DF5B7C0A1D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjAndreVeiculosMicrosservicos.Driver", "ProjAndreVeiculosMicrosservicos.Driver\ProjAndreVeiculosMicrosservicos.Driver.csproj", "{8E396CC1-ED98-4580-B046-58C7AAD4CCDE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjAndreVeiculosMicrosservicos.Driver", "ProjAndreVeiculosMicrosservicos.Driver\ProjAndreVeiculosMicrosservicos.Driver.csproj", "{8E396CC1-ED98-4580-B046-58C7AAD4CCDE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjAndreVeiculosMicrosservicos.Financing", "ProjAndreVeiculosMicrosservicos.Financing\ProjAndreVeiculosMicrosservicos.Financing.csproj", "{CDDEDE3C-F113-45E7-91D7-CD20F77FB3CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjAndreVeiculosMicrosservicos.Financing", "ProjAndreVeiculosMicrosservicos.Financing\ProjAndreVeiculosMicrosservicos.Financing.csproj", "{CDDEDE3C-F113-45E7-91D7-CD20F77FB3CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjAndreVeiculosMicrosservicos.Isurance", "ProjAndreVeiculosMicrosservicos.Isurance\ProjAndreVeiculosMicrosservicos.Isurance.csproj", "{0FEFA4B0-6880-4608-9FB4-D58F6643CEDB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjAndreVeiculosMicrosservicos.Insurance", "ProjAndreVeiculosMicrosservicos.Isurance\ProjAndreVeiculosMicrosservicos.Insurance.csproj", "{0FEFA4B0-6880-4608-9FB4-D58F6643CEDB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjAndreVeiculosMicrosservicos.Dependent", "ProjAndreVeiculosMicrosservicos.Dependent\ProjAndreVeiculosMicrosservicos.Dependent.csproj", "{1CB1C403-C843-4422-9F82-D9FB2F006CFB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjAndreVeiculosMicrosservicos.Dependent", "ProjAndreVeiculosMicrosservicos.Dependent\ProjAndreVeiculosMicrosservicos.Dependent.csproj", "{1CB1C403-C843-4422-9F82-D9FB2F006CFB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataApi", "DataApi\DataApi.csproj", "{DB3F5FE6-DF1E-4513-945C-0052C1D33E72}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataApi", "DataApi\DataApi.csproj", "{DB3F5FE6-DF1E-4513-945C-0052C1D33E72}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

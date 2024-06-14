@@ -3,6 +3,8 @@ using Models;
 using System.Configuration;
 using static MongoDB.Bson.Serialization.Serializers.SerializerHelper;
 using System.Reflection.Emit;
+using Models.DTO;
+using Dapper;
 
 namespace Repositories.Repositories
 {
@@ -34,59 +36,71 @@ namespace Repositories.Repositories
             return dependent.CPF;
         }
 
-        public List<Dependent> GetAllDependents()
+        public async Task<List<DependentDTO>> GetAllDependents()
         {
-            List<Dependent> dependents = new();
+            List<DependentDTO> dependents = new();
             using (var db = new SqlConnection(Conn))
             {
                 db.Open();
                 var cmd = new SqlCommand { Connection = db };
 
-                cmd.CommandText = "SELECT [d].[CPF], [d].[AdressId], [d].[CustomerCPF], [d].[DateOfBirth], [d].[Email], [d].[Name], [d].[Phone], [c].[CPF], [c].[AdressId], [c].[DateOfBirth], [c].[Email], [c].[Income], [c].[Name], [c].[PDFDocument], [c].[Phone], [a].[Id], [a].[City], [a].[Complement], [a].[District], [a].[Number], [a].[PublicPlace], [a].[UF], [a].[ZipCode] FROM [Dependent] AS[d] LEFT JOIN[Customer] AS [c] ON [d].[CustomerCPF] = [c].[CPF] LEFT JOIN [Adress] AS[a] ON[d].[AdressId] = [a].[Id]";
+                cmd.CommandText = "SELECT CPF, Name, DateOfBirth, AdressId, Phone, Email, CustomerCPF FROM dbo.Dependent";
 
-                using(var reader = cmd.ExecuteReader())
+                using (var reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        dependents.Add(new Dependent
+                        dependents.Add(new DependentDTO
                         {
-                            CPF = reader.GetString(0),
-                            Adress = new()
-                            {
-                                Id = reader.GetInt32(1),
-                                City = reader.GetString(16),
-                                Complement = reader.GetString(17),
-                                District = reader.GetString(18),
-                                Number = reader.GetInt32(19),
-                                PublicPlace = reader.GetString(20),
-                                UF = reader.GetString(21),
-                                ZipCode = reader.GetString(22)
-                            },
-                            Customer = new()
-                            {
-                                CPF = reader.GetString(2),
-                                Adress = new()
-                                {
-                                    Id = reader.GetInt32(8)
-                                },
-                                DateOfBirth = reader.GetDateTime(9),
-                                Email = reader.GetString(10),
-                                Income = reader.GetDecimal(11),
-                                Name = reader.GetString(12),
-                                PDFDocument = reader.GetString(13),
-                                Phone = reader.GetString(14)
-
-                            },
-                            DateOfBirth = reader.GetDateTime(3),
-                            Email = reader.GetString(4),
-                            Name = reader.GetString(5),
-                            Phone = reader.GetString(6),
+                            DependentCPF = reader.GetString(0),
+                            Name = reader.GetString(1),
+                            DateOfBirth = reader.GetDateTime(2),
+                            Adress = new AdressDTO { Id = reader.GetInt32(3) },
+                            Phone = reader.GetString(4),
+                            Email = reader.GetString(5),
+                            CustomerCPF = reader.GetString(6)
                         });
                     }
                 }
                 db.Close();
             }
             return dependents;
+        }
+
+        public async Task<DependentDTO> GetDependent(string DependentCPF)
+        {
+            try
+            {
+                using (var db = new SqlConnection(Conn))
+                {
+                    db.Open();
+                    var cmd = new SqlCommand { Connection = db };
+                    cmd.CommandText = "SELECT CPF, Name, DateOfBirth, AdressId, Phone, Email, CustomerCPF FROM dbo.Dependent WHERE CPF = @DependentCPF";
+                    cmd.Parameters.AddWithValue("@DependentCPF", DependentCPF);
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            return new DependentDTO
+                            {
+                                DependentCPF = reader.GetString(0),
+                                Name = reader.GetString(1),
+                                DateOfBirth = reader.GetDateTime(2),
+                                Adress = new AdressDTO { Id = reader.GetInt32(3) },
+                                Phone = reader.GetString(4),
+                                Email = reader.GetString(5),
+                                CustomerCPF = reader.GetString(6)
+                            };
+                        }
+                        db.Close();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return null;
         }
     }
 }

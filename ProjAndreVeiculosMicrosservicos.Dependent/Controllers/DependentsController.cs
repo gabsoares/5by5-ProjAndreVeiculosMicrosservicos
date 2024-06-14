@@ -41,7 +41,7 @@ namespace ProjAndreVeiculosMicrosservicos.Dependent.Controllers
             {
                 return NotFound();
             }
-            return _dependentService.GetAllDependents();
+            return await _dependentService.GetAllDependents();
         }
 
         // GET: api/Dependents/5
@@ -52,7 +52,7 @@ namespace ProjAndreVeiculosMicrosservicos.Dependent.Controllers
             {
                 return NotFound();
             }
-            var dependent = await _context.Dependent.FindAsync(id);
+            var dependent = await _dependentService.GetDependent(id);
 
             if (dependent == null)
             {
@@ -72,7 +72,7 @@ namespace ProjAndreVeiculosMicrosservicos.Dependent.Controllers
 
             var customer = _context.Customer.Where(x => x.CPF == dependentDTO.CustomerCPF).FirstOrDefault();
             Models.Dependent dependent = new(dependentDTO);
-            if(customer == null)
+            if (customer == null)
             {
                 return BadRequest("Cliente nao existe");
             }
