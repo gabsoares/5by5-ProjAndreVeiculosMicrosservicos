@@ -9,7 +9,6 @@ using Microsoft.EntityFrameworkCore;
 using Models;
 using Models.DTO;
 using ProjAndreVeiculosMicrosservicos.Isurance.Data;
-using Services;
 using Services.Services;
 
 namespace ProjAndreVeiculosMicrosservicos.Isurance.Controllers
@@ -45,7 +44,7 @@ namespace ProjAndreVeiculosMicrosservicos.Isurance.Controllers
             {
                 return NotFound();
             }
-            var insurance = await _context.Insurance.FindAsync(id);
+            var insurance = await _insuranceService.GetInsurance(id);
 
             if (insurance == null)
             {

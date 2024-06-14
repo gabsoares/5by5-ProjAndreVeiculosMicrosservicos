@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
 using Models;
+using Models.DTO;
 using System.Collections.Generic;
 using System.Configuration;
 
@@ -13,27 +14,49 @@ namespace Repositories.Repositories
         {
             Conn = ConfigurationManager.ConnectionStrings["StringConnection"].ConnectionString;
         }
-        public async Task<List<Insurance>> GetAllInsurances()
+        public async Task<List<InsuranceDTO>> GetAllInsurances()
         {
-            List<Insurance> insurances = new();
-            using (var db = new SqlConnection(Conn))
+            List<InsuranceDTO> insurances = new();
+            try
             {
-                db.Open();
-                var query = db.Query(Insurance.GETALL);
-                foreach (var insurance in query)
+                using (var db = new SqlConnection(Conn))
                 {
-                    insurances.Add(new Insurance
+                    db.Open();
+                    var query = await db.QueryAsync<InsuranceDTO>(Insurance.GETALL);
+                    foreach (var insurance in query)
                     {
-                        Id = insurance.Id,
-                        Car = insurance.Car,
-                        Customer = insurance.Customer,
-                        Driver = insurance.Driver,
-                        Franchise = insurance.Franchise
-                    });
+                        insurances.Add(insurance);
+                    }
+                    db.Close();
                 }
-                db.Close();
             }
+            catch (Exception)
+            {
+                throw;
+            }
+
             return insurances;
+        }
+
+        public async Task<InsuranceDTO> GetInsurance(int Id)
+        {
+            InsuranceDTO insurance = new();
+            try
+            {
+                using (var db = new SqlConnection(Conn))
+                {
+                    db.Open();
+                    var query = await db.QueryAsync<InsuranceDTO>(Insurance.GETONE, new { Id });
+                    insurance = query.FirstOrDefault();
+                    
+                    db.Close();
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return insurance;
         }
 
         public async Task<int> InsertInsurance(Insurance insurance)

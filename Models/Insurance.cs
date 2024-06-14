@@ -5,6 +5,7 @@ namespace Models
     public class Insurance
     {
         public static readonly string GETALL = "SELECT Id, CustomerCPF, Franchise, CarPlate, DriverCPF FROM dbo.Insurance";
+        public static readonly string GETONE = "SELECT Id, CustomerCPF, Franchise, CarPlate, DriverCPF FROM dbo.Insurance WHERE Id = @Id";
         public static readonly string INSERT = "INSERT INTO dbo.Insurance (CustomerCPF, Franchise, CarPlate, DriverCPF) VALUES (@CustomerCPF, @Franchise, @CarPlate, @DriverCPF); SELECT CAST(SCOPE_IDENTITY() AS INT)";
 
         public int Id { get; set; }
@@ -20,6 +21,7 @@ namespace Models
 
         public Insurance(InsuranceDTO insuranceDTO)
         {
+            this.Id = insuranceDTO.Id;
             Customer customer = new Customer { CPF = insuranceDTO.CustomerCPF };
             this.Franchise = insuranceDTO.Franchise;
             Car car = new Car { CarPlate = insuranceDTO.CarPlate };

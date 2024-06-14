@@ -38,7 +38,11 @@ namespace ProjAndreVeiculosMicrosservicos.Driver.Controllers
             {
                 return NotFound();
             }
-            var driver = await _context.Driver.FindAsync(id);
+            var driver = await _context.Driver
+                .Include(d => d.Adress)
+                .Include(d => d.Cnh)
+                .Include(d => d.Cnh.Category)
+                .FirstOrDefaultAsync(d => d.CPF == id);
 
             if (driver == null)
             {
