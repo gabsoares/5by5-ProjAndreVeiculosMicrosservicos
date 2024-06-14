@@ -21,6 +21,7 @@ namespace Models
             
         }
 
+        //Receber apenas as infos necessarias
         public Car(CarDTO carDTO)
         {
             this.CarName = carDTO.CarName;
