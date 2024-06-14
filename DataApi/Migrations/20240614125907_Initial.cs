@@ -29,6 +29,19 @@ namespace DataApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Bank",
+                columns: table => new
+                {
+                    CNPJ = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    BankName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FoundationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Bank", x => x.CNPJ);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Car",
                 columns: table => new
                 {
@@ -144,48 +157,6 @@ namespace DataApi.Migrations
                     table.PrimaryKey("PK_Customer", x => x.CPF);
                     table.ForeignKey(
                         name: "FK_Customer_Adress_AdressId",
-                        column: x => x.AdressId,
-                        principalTable: "Adress",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Dependent",
-                columns: table => new
-                {
-                    CPF = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    AdressId = table.Column<int>(type: "int", nullable: true),
-                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Dependent", x => x.CPF);
-                    table.ForeignKey(
-                        name: "FK_Dependent_Adress_AdressId",
-                        column: x => x.AdressId,
-                        principalTable: "Adress",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Driver",
-                columns: table => new
-                {
-                    CPF = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    AdressId = table.Column<int>(type: "int", nullable: true),
-                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Driver", x => x.CPF);
-                    table.ForeignKey(
-                        name: "FK_Driver_Adress_AdressId",
                         column: x => x.AdressId,
                         principalTable: "Adress",
                         principalColumn: "Id");
@@ -310,6 +281,33 @@ namespace DataApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Dependent",
+                columns: table => new
+                {
+                    CPF = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CustomerCPF = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AdressId = table.Column<int>(type: "int", nullable: true),
+                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Dependent", x => x.CPF);
+                    table.ForeignKey(
+                        name: "FK_Dependent_Adress_AdressId",
+                        column: x => x.AdressId,
+                        principalTable: "Adress",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Dependent_Customer_CustomerCPF",
+                        column: x => x.CustomerCPF,
+                        principalTable: "Customer",
+                        principalColumn: "CPF");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "FinancialPending",
                 columns: table => new
                 {
@@ -333,34 +331,31 @@ namespace DataApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Insurance",
+                name: "Driver",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CustomerCPF = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    Franchise = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    CarPlate = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    DriverCPF = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    CPF = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CnhNumber = table.Column<long>(type: "bigint", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AdressId = table.Column<int>(type: "int", nullable: true),
+                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Insurance", x => x.Id);
+                    table.PrimaryKey("PK_Driver", x => x.CPF);
                     table.ForeignKey(
-                        name: "FK_Insurance_Car_CarPlate",
-                        column: x => x.CarPlate,
-                        principalTable: "Car",
-                        principalColumn: "CarPlate");
+                        name: "FK_Driver_Adress_AdressId",
+                        column: x => x.AdressId,
+                        principalTable: "Adress",
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Insurance_Customer_CustomerCPF",
-                        column: x => x.CustomerCPF,
-                        principalTable: "Customer",
-                        principalColumn: "CPF");
-                    table.ForeignKey(
-                        name: "FK_Insurance_Driver_DriverCPF",
-                        column: x => x.DriverCPF,
-                        principalTable: "Driver",
-                        principalColumn: "CPF");
+                        name: "FK_Driver_Cnh_CnhNumber",
+                        column: x => x.CnhNumber,
+                        principalTable: "Cnh",
+                        principalColumn: "CnhNumber",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -392,6 +387,37 @@ namespace DataApi.Migrations
                         column: x => x.TicketId,
                         principalTable: "Ticket",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Insurance",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CustomerCPF = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Franchise = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    CarPlate = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    DriverCPF = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Insurance", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Insurance_Car_CarPlate",
+                        column: x => x.CarPlate,
+                        principalTable: "Car",
+                        principalColumn: "CarPlate");
+                    table.ForeignKey(
+                        name: "FK_Insurance_Customer_CustomerCPF",
+                        column: x => x.CustomerCPF,
+                        principalTable: "Customer",
+                        principalColumn: "CPF");
+                    table.ForeignKey(
+                        name: "FK_Insurance_Driver_DriverCPF",
+                        column: x => x.DriverCPF,
+                        principalTable: "Driver",
+                        principalColumn: "CPF");
                 });
 
             migrationBuilder.CreateTable(
@@ -432,6 +458,33 @@ namespace DataApi.Migrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Financing",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SaleId = table.Column<int>(type: "int", nullable: false),
+                    FinancingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    BankCNPJ = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Financing", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Financing_Bank_BankCNPJ",
+                        column: x => x.BankCNPJ,
+                        principalTable: "Bank",
+                        principalColumn: "CNPJ",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Financing_Sale_SaleId",
+                        column: x => x.SaleId,
+                        principalTable: "Sale",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_CarJob_CarPlate",
                 table: "CarJob",
@@ -458,9 +511,19 @@ namespace DataApi.Migrations
                 column: "AdressId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Dependent_CustomerCPF",
+                table: "Dependent",
+                column: "CustomerCPF");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Driver_AdressId",
                 table: "Driver",
                 column: "AdressId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Driver_CnhNumber",
+                table: "Driver",
+                column: "CnhNumber");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Employee_AdressId",
@@ -476,6 +539,16 @@ namespace DataApi.Migrations
                 name: "IX_FinancialPending_CustomerCPF",
                 table: "FinancialPending",
                 column: "CustomerCPF");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Financing_BankCNPJ",
+                table: "Financing",
+                column: "BankCNPJ");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Financing_SaleId",
+                table: "Financing",
+                column: "SaleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Insurance_CarPlate",
@@ -544,13 +617,13 @@ namespace DataApi.Migrations
                 name: "CarJob");
 
             migrationBuilder.DropTable(
-                name: "Cnh");
-
-            migrationBuilder.DropTable(
                 name: "Dependent");
 
             migrationBuilder.DropTable(
                 name: "FinancialPending");
+
+            migrationBuilder.DropTable(
+                name: "Financing");
 
             migrationBuilder.DropTable(
                 name: "Insurance");
@@ -559,13 +632,13 @@ namespace DataApi.Migrations
                 name: "Purchase");
 
             migrationBuilder.DropTable(
-                name: "Sale");
-
-            migrationBuilder.DropTable(
                 name: "Job");
 
             migrationBuilder.DropTable(
-                name: "CnhCategory");
+                name: "Bank");
+
+            migrationBuilder.DropTable(
+                name: "Sale");
 
             migrationBuilder.DropTable(
                 name: "Driver");
@@ -583,6 +656,9 @@ namespace DataApi.Migrations
                 name: "Payment");
 
             migrationBuilder.DropTable(
+                name: "Cnh");
+
+            migrationBuilder.DropTable(
                 name: "Adress");
 
             migrationBuilder.DropTable(
@@ -596,6 +672,9 @@ namespace DataApi.Migrations
 
             migrationBuilder.DropTable(
                 name: "Ticket");
+
+            migrationBuilder.DropTable(
+                name: "CnhCategory");
 
             migrationBuilder.DropTable(
                 name: "PixType");

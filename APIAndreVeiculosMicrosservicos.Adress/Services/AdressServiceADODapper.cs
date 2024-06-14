@@ -1,7 +1,6 @@
-﻿using Models;
-using Repositories.Repositories_DAPPER;
+﻿using APIAndreVeiculosMicrosservicos.Adress.Repositories;
 
-namespace Services
+namespace APIAndreVeiculosMicrosservicos.Adress.Services
 {
     public class AdressServiceADODapper
     {
@@ -12,7 +11,7 @@ namespace Services
             _adressRepository = new AdressRepository();
         }
 
-        public async Task<List<Adress>> GetAllAdresses(byte type)
+        public async Task<List<Models.Adress>> GetAllAdresses(byte type)
         {
             try
             {
@@ -24,7 +23,7 @@ namespace Services
             }
         }
 
-        public Adress InsertOne(Adress adress)
+        public Models.Adress InsertOne(Models.Adress adress)
         {
             _adressRepository.InsertOne(adress);
             return adress;
