@@ -7,7 +7,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Models;
+using Models.DTO;
 using ProjAndreVeiculosMicrosservicos.Financing.Data;
+using Services.Services;
 
 namespace ProjAndreVeiculosMicrosservicos.Financing.Controllers;
 
@@ -16,10 +18,12 @@ namespace ProjAndreVeiculosMicrosservicos.Financing.Controllers;
 public class FinancingsController : ControllerBase
 {
     private readonly DataApiContext _context;
+    private readonly FinancingService _financingService;
 
-    public FinancingsController(DataApiContext context)
+    public FinancingsController(DataApiContext context, FinancingService financingService)
     {
         _context = context;
+        _financingService = financingService;
     }
 
     // GET: api/Financings
@@ -31,7 +35,7 @@ public class FinancingsController : ControllerBase
             return NotFound();
         }
 
-        return await _context.Financing.ToListAsync();
+        return await _financingService.GetAllFinancing();
     }
 
     // GET: api/Financings/5
@@ -43,7 +47,7 @@ public class FinancingsController : ControllerBase
             return NotFound();
         }
 
-        var financing = await _context.Financing.FindAsync(id);
+        var financing = await _financingService.GetFinancingById(id);
 
         if (financing == null)
         {
@@ -87,17 +91,16 @@ public class FinancingsController : ControllerBase
     // POST: api/Financings
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<Models.Financing>> PostFinancing(Models.Financing financing)
+    public async Task<ActionResult<Models.Financing>> PostFinancing(FinancingDTO financing)
     {
         if (_context.Financing == null)
         {
             return Problem("Entity set 'ProjAndreVeiculosMicrosservicosFinancingContext.Financing'  is null.");
         }
 
-        _context.Financing.Add(financing);
-        await _context.SaveChangesAsync();
+        var addedId = await _financingService.InsertFinancing(financing);
 
-        return CreatedAtAction("GetFinancing", new { id = financing.Id }, financing);
+        return CreatedAtAction("GetFinancing", new { id = addedId }, financing);
     }
 
     // DELETE: api/Financings/5

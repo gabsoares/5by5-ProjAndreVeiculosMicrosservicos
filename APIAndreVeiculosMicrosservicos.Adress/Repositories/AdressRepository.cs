@@ -1,30 +1,27 @@
-﻿using System.Configuration;
-using System.Net;
-using Dapper;
-using Microsoft.Data.SqlClient;
-using Models;
+﻿using Microsoft.Data.SqlClient;
 using Models.DTO;
 using MongoDB.Driver;
 using static Dapper.SqlMapper;
+using ConfigurationManager = System.Configuration.ConfigurationManager;
 
-namespace Repositories.Repositories_DAPPER
+namespace APIAndreVeiculosMicrosservicos.Adress.Repositories
 {
     public class AdressRepository
     {
         private string Conn { get; set; }
         private readonly string ConnMongo;
-        private readonly IMongoCollection<Adress> _adresses;
+        private readonly IMongoCollection<Models.Adress> _adresses;
         public AdressRepository()
         {
             Conn = ConfigurationManager.ConnectionStrings["StringConnection"].ConnectionString;
             ConnMongo = "mongodb://root:Mongo%402024%23@localhost:27017/";
             var client = new MongoClient(ConnMongo);
             var database = client.GetDatabase("DBProjAddress");
-            _adresses = database.GetCollection<Adress>("Address");
+            _adresses = database.GetCollection<Models.Adress>("Address");
         }
-        public async Task<List<Adress>> GetAllAdresses(byte type)
+        public async Task<List<Models.Adress>> GetAllAdresses(byte type)
         {
-            List<Adress> adresses = new();
+            List<Models.Adress> adresses = new();
             AdressDTO a = new();
             using (var db = new SqlConnection(Conn))
             {
@@ -32,14 +29,14 @@ namespace Repositories.Repositories_DAPPER
                 //ADO
                 if (type == 1)
                 {
-                    var cmd = new SqlCommand(Adress.GETALL, db);
+                    var cmd = new SqlCommand(Models.Adress.GETALL, db);
                     try
                     {
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
                             while (reader.Read())
                             {
-                                adresses.Add(new Adress
+                                adresses.Add(new Models.Adress
                                 {
                                     Id = (int)reader["Id"],
                                     PublicPlace = reader["PublicPlace"].ToString(),
@@ -62,10 +59,10 @@ namespace Repositories.Repositories_DAPPER
                 //DAPPER
                 else if (type == 2)
                 {
-                    var query = db.Query(Adress.GETALL);
+                    var query = db.Query(Models.Adress.GETALL);
                     foreach (var adress in query)
                     {
-                        adresses.Add(new Adress
+                        adresses.Add(new Models.Adress
                         {
                             Id = adress.Id,
                             PublicPlace = adress.PublicPlace,
@@ -83,7 +80,7 @@ namespace Repositories.Repositories_DAPPER
             return adresses;
         }
 
-        public Adress InsertOne(Adress adress)
+        public Models.Adress InsertOne(Models.Adress adress)
         {
             _adresses.InsertOne(adress);
             return adress;

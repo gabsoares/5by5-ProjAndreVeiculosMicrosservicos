@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Models
 {
@@ -12,8 +13,8 @@ namespace Models
     {
         [Key]
         [BsonId]
-        public string CNPJ { get; set; }
-        public string BankName { get; set; }
-        public DateTime FoundationDate { get; set; }
+        [JsonProperty("cnpj")]public string CNPJ { get; set; }
+        [JsonProperty("bankName")]public string BankName { get; set; }
+        [JsonProperty("foundationDate")]public DateTime FoundationDate { get; set; }
     }
 }

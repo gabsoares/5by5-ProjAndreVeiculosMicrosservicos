@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using ProjAndreVeiculosMicrosservicos.Financing.Data;
+using Services.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<DataApiContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ProjAndreVeiculosMicrosservicosFinancingContext") ?? throw new InvalidOperationException("Connection string 'ProjAndreVeiculosMicrosservicosFinancingContext' not found.")));
@@ -12,6 +14,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddSingleton<FinancingService>();
 
 var app = builder.Build();
 

@@ -1,4 +1,5 @@
 ﻿using Models;
+using Models.DTO;
 using Newtonsoft.Json;
 using NuGet.Protocol;
 using Repositories.Repositories;
@@ -22,10 +23,10 @@ public class FinancingService
         var financingList = await _financingRepository.GetAllFinancing();
         foreach (var dto in financingList)
         {
-            var saleResponse = await _http.GetAsync($"https://localhost:7239/api/sale/{dto.SaleId}");
-            var bankResponse = await _http.GetAsync($"https://localhost:7033/api/Bank/{dto.BankId}");
-            var sale = JsonConvert.DeserializeObject<Sale>(saleResponse.Content.ToString());
-            var bank = JsonConvert.DeserializeObject<Bank>(bankResponse.Content.ToString());
+            var saleResponse = await _http.GetAsync($"https://localhost:7239/api/Sales/{dto.SaleId}");
+            var bankResponse = await _http.GetAsync($"https://localhost:7040/api/Banks/{dto.BankId}");
+            var sale = JsonConvert.DeserializeObject<Sale>(await saleResponse.Content.ReadAsStringAsync());
+            var bank = JsonConvert.DeserializeObject<Bank>(await bankResponse.Content.ReadAsStringAsync());
 
             populateFinancingList.Add(new Financing()
             {
@@ -49,10 +50,10 @@ public class FinancingService
             return null;
         }
 
-        var saleResponse = await _http.GetAsync($"https://localhost:7239/api/sale/{financingDto.SaleId}");
-        var bankResponse = await _http.GetAsync($"https://localhost:7033/api/Bank/{financingDto.BankId}");
-        var sale = JsonConvert.DeserializeObject<Sale>(saleResponse.Content.ToString());
-        var bank = JsonConvert.DeserializeObject<Bank>(bankResponse.Content.ToString());
+        var saleResponse = await _http.GetAsync($"https://localhost:7239/api/Sales/{financingDto.SaleId}");
+        var bankResponse = await _http.GetAsync($"https://localhost:7040/api/Banks/{financingDto.BankId}");
+        var sale = JsonConvert.DeserializeObject<Sale>(await saleResponse.Content.ReadAsStringAsync());
+        var bank = JsonConvert.DeserializeObject<Bank>(await bankResponse.Content.ReadAsStringAsync());
 
         populateFinancing = new Financing()
         {
@@ -65,8 +66,21 @@ public class FinancingService
         return populateFinancing;
     }
 
-    public async Task<int> InsertFinancing(Financing financing)
+    public async Task<int> InsertFinancing(FinancingDTO financingDto)
     {
-        return await _financingRepository.InsertFinancing(financing);
+        var saleResponse = await _http.GetAsync($"https://localhost:7239/api/Sales/{financingDto.SaleId}");
+        var bankResponse = await _http.GetAsync($"https://localhost:7040/api/Banks/{financingDto.BankId}");
+        var sale = JsonConvert.DeserializeObject<Sale>(await saleResponse.Content.ReadAsStringAsync());
+        var bank = JsonConvert.DeserializeObject<Bank>(await bankResponse.Content.ReadAsStringAsync());
+
+        var populateFinancing = new Financing()
+        {
+            Id = financingDto.Id,
+            Bank = bank,
+            Sale = sale,
+            FinancingDate = financingDto.FinancingDate
+        };
+        
+        return await _financingRepository.InsertFinancing(populateFinancing);
     }
 }
