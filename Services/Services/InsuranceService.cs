@@ -19,11 +19,11 @@ namespace Services.Services
             List<Insurance> insuranceList = new();
             var insuranceDTO = await _insuranceRepository.GetAllInsurances();
             var httpClient = new HttpClient();
-            foreach (var itemDTO in insuranceDTO)
+            foreach (var item in insuranceDTO)
             {
-                var responseCustomer = await httpClient.GetAsync($"https://localhost:7033/api/Customers/{itemDTO.CustomerCPF}");
-                var responseCar = await httpClient.GetAsync($"https://localhost:7055/api/Cars/{itemDTO.CarPlate}");
-                var responseDriver = await httpClient.GetAsync($"https://localhost:7188/api/Drivers/{itemDTO.DriverCPF}");
+                var responseCustomer = await httpClient.GetAsync($"https://localhost:7033/api/Customers/{item.CustomerCPF}");
+                var responseCar = await httpClient.GetAsync($"https://localhost:7055/api/Cars/{item.CarPlate}");
+                var responseDriver = await httpClient.GetAsync($"https://localhost:7188/api/Drivers/{item.DriverCPF}");
 
                 var customer = JsonConvert.DeserializeObject<Customer>(await responseCustomer.Content.ReadAsStringAsync());
                 var car = JsonConvert.DeserializeObject<Car>(await responseCar.Content.ReadAsStringAsync());
@@ -31,10 +31,10 @@ namespace Services.Services
 
                 insuranceList.Add(new Insurance
                 {
-                    Id = itemDTO.Id,
+                    Id = item.Id,
                     Car = car,
                     Customer = customer,
-                    Franchise = itemDTO.Franchise,
+                    Franchise = item.Franchise,
                     Driver = driver
                 });
             }

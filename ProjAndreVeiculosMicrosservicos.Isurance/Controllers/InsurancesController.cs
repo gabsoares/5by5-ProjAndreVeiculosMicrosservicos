@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using DataApi.Data;
-using Microsoft.AspNetCore.Http;
+﻿using DataApi.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Models;
 using Models.DTO;
-using ProjAndreVeiculosMicrosservicos.Isurance.Data;
 using Services.Services;
 
 namespace ProjAndreVeiculosMicrosservicos.Isurance.Controllers
@@ -64,8 +58,18 @@ namespace ProjAndreVeiculosMicrosservicos.Isurance.Controllers
             }
             Insurance insurance = new Insurance(insuranceDTO);
             var carPlate = _context.Car.Where(c => c.CarPlate == insuranceDTO.CarPlate).FirstOrDefault();
-            var customer = _context.Customer.Where(c => c.CPF == insuranceDTO.CustomerCPF).FirstOrDefault();
-            var driver = _context.Driver.Where(d => d.CPF == insuranceDTO.DriverCPF).FirstOrDefault();
+
+            var customer = _context.Customer
+                .Where(c => c.CPF == insuranceDTO.CustomerCPF)
+                .Include(c => c.Adress)
+                .FirstOrDefault();
+
+            var driver = _context.Driver
+                .Where(d => d.CPF == insuranceDTO.DriverCPF)
+                .Include(d => d.Adress)
+                .Include(d => d.Cnh)
+                .Include(d => d.Cnh.Category)
+                .FirstOrDefault();
 
             insurance.Car = carPlate;
             insurance.Customer = customer;
